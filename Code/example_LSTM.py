@@ -3,6 +3,7 @@
 import torch
 import torch.nn as nn
 import torch.optim as optim 
+import re
 
 #%%
 #DEFINING LSTM MODEL
@@ -26,13 +27,20 @@ class MWPSolver(nn.Module): #our model class MWPSolver inherits from "nn.Module"
 #%%
 #EXAMPLE PROBLEM
 word_problem = "John has 5 apples, and he buys 3 more. How many apples does John have now?"
-vocab = {'John': 0, 'has': 1, '5': 2, 'apples': 3, 'and': 4, 'he': 5, 'buys': 6, '3': 7, 'more': 8, 'How': 9, 'many': 10, 'does': 11, 'now': 12, '?': 13}
-#getting indices
-word_indices = [vocab[word.lower()] for word in word_problem.split()]
-
+vocab = {'john': 0, 'has': 1, '5': 2, 'apples': 3, 'and': 4, 'he': 5, 'buys': 6, '3': 7, 'more': 8, 'how': 9, 'many': 10, 'does': 11, 'now': 12, '?': 13, '+': 14}
+# Clean the words by removing punctuation using re
+cleaned_words = re.sub(r'[^\w\s]', '', word_problem).split()
+# Get indices, convert to PyTorch tensor
+word_indices = [vocab.get(word.lower(), -1) for word in cleaned_words]
+# Filter out words not present in the vocabulary (-1 indicates not found)
+word_indices = [index for index in word_indices if index != -1]
 #Convert to PyTorch tensor
-input_sequence = torch.tensor(word_indices).view(-1, 1) #reshape to have single column; reshaping is useful when we want to treat each element in 'word_indices' as a 
+#input_sequence = torch.tensor(word_indices).view(-1, 1) #reshape to have single column; reshaping is useful when we want to treat each element in 'word_indices' as a 
 #separate instance or time step in a sequence 
+
+# Pad sequences to the length of the longest sequence in the batch
+max_len = max(len(word_indices), 1)  # Ensure max_len is at least 1
+padded_sequence = torch.tensor(word_indices + [0] * (max_len - len(word_indices))).view(-1, 1)
 
 #Initialize model parameters
 input_size = len(vocab)
@@ -46,18 +54,24 @@ model = MWPSolver(input_size, hidden_size, output_size)
 criterion = nn.NLLLoss() #Negative Log Likelihood Loss is commonly used with models that have a softmax activation function in the output layer
 optimizer = optim.SGD(model.parameters(), lr=0.01)
 
+
 #%% 
 #TRAINING THE DATA 
 for epoch in range(100): #change based of data 
     optimizer.zero_grad() #used to zero out the gradients of the model parameters 
-    output = model(input_sequence)
+    output = model(padded_sequence)
 
      # Assuming target equation is provided (ground truth)
     target_equation = "5 + 3"
     target_indices = [vocab[word.lower()] for word in target_equation.split()]
-    target_tensor = torch.tensor(target_indices).view(-1)
+    # Pad target indices to match the length of the output sequence
+    target_tensor = torch.tensor(target_indices + [0] * (max_len - len(target_indices))).view(1, -1)
 
-    loss = criterion(output.view(-1, len(vocab)), target_tensor)
+
+    # Repeat the target tensor to match the batch size of the model's output
+    target_tensor = target_tensor.repeat(output.size(0),1)
+
+    loss = criterion(output.permute(0, 2, 1), target_tensor)  # Permute dimensions for NLLLoss compatibility
     loss.backward()
     optimizer.step()
 
@@ -79,3 +93,6 @@ with torch.no_grad():
     predicted_equation = ' '.join([word for idx in predicted_indices[0] for word, idx_map in vocab.items() if idx == idx_map])
     print(f'Test Word Problem: {test_word_problem}')
     print(f'Predicted Equation: {predicted_equation}')
+
+
+# %%
