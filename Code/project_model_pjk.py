@@ -4,7 +4,7 @@ import pandas as pd
 import re
 
 #load and preprocess data
-data = pd.read_csv('test_data.csv')  # Replace 'your_data.csv' with your CSV file path
+data = pd.read_csv('test_data.csv')
 
 #function to replace 'numberX' placeholders with '[NUM]' token
 def replace_number_placeholders(text):
@@ -60,7 +60,7 @@ eval_dataset = dataset
 #define optimizer and learning rate
 optimizer = torch.optim.AdamW(model.parameters(), lr=1e-4)
 
-# Define Seq2SeqTrainer with evaluation dataset
+#define Seq2SeqTrainer with evaluation dataset
 trainer = Seq2SeqTrainer(
     model=model,
     args=training_args,
