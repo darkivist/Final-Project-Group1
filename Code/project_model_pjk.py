@@ -4,11 +4,15 @@ import pandas as pd
 import re
 
 #load and preprocess data
-data = pd.read_csv('test_data.csv')
+data = pd.read_csv('train.csv')
 
 #function to replace 'numberX' placeholders with '[NUM]' token
 def replace_number_placeholders(text):
     return re.sub(r'number\d+', '[NUM]', text)
+
+
+#ensure 'ques' is a string
+data['Ques'] = data['Ques'].astype(str)
 
 #replace number placeholders
 data['Processed_Ques'] = data['Ques'].apply(replace_number_placeholders)
@@ -50,7 +54,7 @@ training_args = Seq2SeqTrainingArguments(
     save_steps=1000,
     evaluation_strategy='steps',
     eval_steps=500,
-    num_train_epochs=5,  # Increase number of epochs to 5
+    num_train_epochs=5,  # increase number of epochs to 5
     predict_with_generate=True
 )
 
@@ -78,3 +82,5 @@ for epoch in range(training_args.num_train_epochs):
     #display training metrics
     train_metrics = trainer.evaluate()
     print(f"Training metrics: {train_metrics}")
+
+trainer.save_model('fine_tuned_model')
