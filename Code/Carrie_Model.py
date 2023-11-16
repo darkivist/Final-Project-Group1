@@ -48,66 +48,84 @@ for epoch in range(n_epochs):
 
     # Print the loss for each epoch
     print(f"Epoch {epoch + 1}/{num_epochs}, Loss: {loss.item()}")
-    
-# %%
+#%%    
+#### OTHER MODEL
 import pandas as pd
-from sklearn.model_selection import train_test_split
-from transformers import GPT2Tokenizer, GPT2LMHeadModel, TextDataset, DataCollatorForLanguageModeling, Trainer, TrainingArguments
+import re
+import torch
+from transformers import T5Tokenizer, T5ForConditionalGeneration, AdamW
+from torch.nn import CrossEntropyLoss
 
-# Load your data
-df = pd.read_csv('/home/ubuntu/NLP_Main/Final-Project-Group1/Code/carrie_sample_code.csv')
-mwp = list(obj for obj in df["Problem"])
-equation = list(obj for obj in df["Numeric Equation"])
+# Load the data
+df = pd.read_csv('/home/ubuntu/NLP_Main/Final-Project-Group1/cleaned_dataset.csv')
 
-# Split the data into training and validation sets
-train_mwp, val_mwp, train_equation, val_equation = train_test_split(mwp, equation, test_size=0.1, random_state=42)
+# Extract input and target expressions
+input_exps = list(df['Question'].values)
+target_exps = list(df['Equation'].values)
 
-# Tokenize the data
-tokenizer = GPT2Tokenizer.from_pretrained("gpt2")
-tokenizer.pad_token = tokenizer.eos_token
-train_encodings = tokenizer(train_mwp, truncation=True, padding=True)
-val_encodings = tokenizer(val_mwp, truncation=True, padding=True)
+# Preprocess input and target expressions
+def preprocess_input(sentence):
+    sentence = sentence.lower().strip()
+    sentence = re.sub(r"([?.!,’])", r" \1 ", sentence)
+    sentence = re.sub(r"([0-9])", r" \1 ", sentence)
+    sentence = re.sub(r'[" "]+', " ", sentence)
+    sentence = sentence.rstrip().strip()
+    return sentence
 
-# Create datasets
-train_dataset = TextDataset(
-    tokenizer=tokenizer,
-    file_path=None,  # Pass None because we provide the tokenized data directly
-    text_files=train_encodings["input_ids"],
-    data_collator=DataCollatorForLanguageModeling(
-        tokenizer=tokenizer,
-        mlm=False,
-    ),
-)
-val_dataset = TextDataset(
-    tokenizer=tokenizer,
-    file_path=None,  # Pass None because we provide the tokenized data directly
-    text_files=val_encodings["input_ids"],
-    data_collator=DataCollatorForLanguageModeling(
-        tokenizer=tokenizer,
-        mlm=False,
-    ),
-)
+def preprocess_target(sentence):
+    sentence = sentence.lower().strip()
+    return sentence
 
-# Fine-tune the GPT-2 model
-model = GPT2LMHeadModel.from_pretrained("gpt2")
-training_args = TrainingArguments(
-    output_dir="./gpt2_finetuned",
-    overwrite_output_dir=True,
-    num_train_epochs=3,
-    per_device_train_batch_size=8,
-    per_device_eval_batch_size=8,
-    save_steps=10_000,
-    save_total_limit=2,
-)
+preprocessed_input_exps = list(map(preprocess_input, input_exps))
+preprocessed_target_exps = list(map(preprocess_target, target_exps))
 
-trainer = Trainer(
-    model=model,
-    args=training_args,
-    data_collator=train_dataset.data_collator,
-    train_dataset=train_dataset,
-    eval_dataset=val_dataset,
-)
 
-trainer.train()
+# Tokenize text
+tokenizer = T5Tokenizer.from_pretrained("t5-small")
+tokenized_inputs = tokenizer(preprocessed_input_exps, return_tensors="pt", padding=True, truncation=True, max_length=64)
+tokenized_targets_no_variable = tokenizer(preprocessed_target_exps, return_tensors="pt", padding=True, truncation=True, max_length=64)
 
-# %%
+# Create Seq2Seq model
+model = T5ForConditionalGeneration.from_pretrained("t5-small")
+
+# Define optimizer and loss function
+optimizer = AdamW(model.parameters(), lr=5e-5)
+criterion = CrossEntropyLoss()
+
+# Train the model
+num_epochs = 10
+
+for epoch in range(num_epochs):
+    model.train()
+    optimizer.zero_grad()
+
+    attention_mask = tokenized_inputs["attention_mask"]
+    outputs = model(input_ids=tokenized_inputs["input_ids"], attention_mask=attention_mask, labels=tokenized_targets_no_variable["input_ids"])
+
+    loss = criterion(outputs.logits.view(-1, outputs.logits.size(-1)), tokenized_targets_no_variable["input_ids"].view(-1))
+
+    loss.backward()
+    optimizer.step()
+
+    print(f'Epoch {epoch+1}/{num_epochs}, Loss: {loss.item()}')
+
+def generate_prediction(model, tokenizer, input_text):
+    model.eval()  # Set the model to evaluation mode
+    input_text = preprocess_input(input_text)
+    input_ids = tokenizer(input_text, return_tensors="pt", padding=True, truncation=True, max_length=64)["input_ids"]
+    
+    # Generate output from the model
+    output_ids = model.generate(input_ids)
+    decoded_output = tokenizer.decode(output_ids[0], skip_special_tokens=True)
+    
+    return decoded_output
+# Replace "Your test sentence goes here." with your actual test sentence
+test_sentence = "David has 48 marbles. He puts them into 4 bags. How many marbles are there in each bag?"
+
+# Generate prediction
+with torch.no_grad():  # No need for gradient computation during inference
+    prediction = generate_prediction(model, tokenizer, test_sentence)
+
+print(f"Test Sentence: {test_sentence}")
+print(f"Generated Prediction: {prediction}")
+
