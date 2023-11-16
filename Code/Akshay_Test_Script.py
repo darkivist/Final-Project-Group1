@@ -24,7 +24,7 @@ class InputEmbedding(nn.Module):
 
 class PositionalEncoding(nn.Module):
 
-    def __init__(self, d_model: int, seq_lens: int, dropout: float) -> None:
+    def __init__(self, d_model: int, seq_lens: int, dropout: float):
         super().__init__()
         self.d_model = d_model
         self.seq_lens = seq_lens
@@ -60,3 +60,10 @@ class PositionalEncoding(nn.Module):
         x = x + (self.pe[:, :x.shape[1], :]).requires_grad_(False)
         return self.dropout(x)
 
+
+
+
+class Transformer(nn.Module):
+
+    def __init__(self, encoder: Encoder, decoder: Decoder, src_embed: InputEmbedding, tgt_embed: InputEmbedding, src_pos: PositionalEncoding, tgt_pos: PositionalEncoding, projection_layer: ProjectionLayer) -> None:
+        super().__init__()
