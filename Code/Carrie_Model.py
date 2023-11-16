@@ -57,7 +57,7 @@ from transformers import T5Tokenizer, T5ForConditionalGeneration, AdamW
 from torch.nn import CrossEntropyLoss
 
 # Load the data
-df = pd.read_csv('/home/ubuntu/NLP_Main/Final-Project-Group1/cleaned_dataset.csv')
+df = pd.read_csv('/home/ubuntu/NLP_Main/Final-Project-Group1/Code/cleaned_dataset.csv')
 
 # Extract input and target expressions
 input_exps = list(df['Question'].values)
@@ -82,8 +82,13 @@ preprocessed_target_exps = list(map(preprocess_target, target_exps))
 
 # Tokenize text
 tokenizer = T5Tokenizer.from_pretrained("t5-small")
-tokenized_inputs = tokenizer(preprocessed_input_exps, return_tensors="pt", padding=True, truncation=True, max_length=64)
-tokenized_targets_no_variable = tokenizer(preprocessed_target_exps, return_tensors="pt", padding=True, truncation=True, max_length=64)
+# Reduce batch size
+batch_size = 4  # Adjust according to your system's capacity
+tokenized_inputs = tokenizer(preprocessed_input_exps, return_tensors="pt", padding=True, truncation=True, max_length=64, max_batch_size=batch_size)
+tokenized_targets_no_variable = tokenizer(preprocessed_target_exps, return_tensors="pt", padding=True, truncation=True, max_length=64, max_batch_size=batch_size)
+
+#tokenized_inputs = tokenizer(preprocessed_input_exps, return_tensors="pt", padding=True, truncation=True, max_length=64)
+#tokenized_targets_no_variable = tokenizer(preprocessed_target_exps, return_tensors="pt", padding=True, truncation=True, max_length=64)
 
 # Create Seq2Seq model
 model = T5ForConditionalGeneration.from_pretrained("t5-small")
@@ -129,3 +134,5 @@ with torch.no_grad():  # No need for gradient computation during inference
 print(f"Test Sentence: {test_sentence}")
 print(f"Generated Prediction: {prediction}")
 
+
+# %%
