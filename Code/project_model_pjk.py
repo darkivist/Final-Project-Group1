@@ -2,6 +2,7 @@ import torch
 from transformers import EncoderDecoderModel, BertTokenizer, Seq2SeqTrainer, Seq2SeqTrainingArguments
 import pandas as pd
 import re
+from sklearn.model_selection import train_test_split
 
 #load and preprocess data
 data = pd.read_csv('train.csv')
@@ -10,35 +11,53 @@ data = pd.read_csv('train.csv')
 def replace_number_placeholders(text):
     return re.sub(r'number\d+', '[NUM]', text)
 
-
 #ensure 'ques' is a string
 data['Ques'] = data['Ques'].astype(str)
 
 #replace number placeholders
 data['Processed_Ques'] = data['Ques'].apply(replace_number_placeholders)
 
-questions = data['Processed_Ques'].tolist()
-answers = data['Answer'].apply(lambda x: str(x)).tolist()
+#train/val split
+train_data, val_data = train_test_split(data, test_size=0.2, random_state=42)
 
-#initialize tokenizer
+train_questions = train_data['Processed_Ques'].tolist()
+train_answers = train_data['Answer'].apply(lambda x: str(x)).tolist()
+
+val_questions = val_data['Processed_Ques'].tolist()
+val_answers = val_data['Answer'].apply(lambda x: str(x)).tolist()
+
+#initializing tokenizer
 tokenizer = BertTokenizer.from_pretrained('bert-base-uncased')
 
-#tokenize input sequences
-tokenized_inputs = tokenizer(questions, return_tensors='pt', padding=True, truncation=True)
+#tokenize input and output sequences
+tokenized_train_inputs = tokenizer(train_questions, return_tensors='pt', padding=True, truncation=True)
+tokenized_train_outputs = tokenizer(train_answers, return_tensors='pt', padding=True, truncation=True)
 
-#tokenize output sequences
-tokenized_outputs = tokenizer(answers, return_tensors='pt', padding=True, truncation=True)
+tokenized_val_inputs = tokenizer(val_questions, return_tensors='pt', padding=True, truncation=True)
+tokenized_val_outputs = tokenizer(val_answers, return_tensors='pt', padding=True, truncation=True)
 
-#combine tokenized inputs and outputs into a list of dictionaries
-dataset = [
+#combine tokenized inputs and outputs into list of dictionaries
+
+train_dataset = [
     {
-        'input_ids': tokenized_inputs['input_ids'][i],
-        'attention_mask': tokenized_inputs['attention_mask'][i],
-        'decoder_input_ids': tokenized_outputs['input_ids'][i],
-        'decoder_attention_mask': tokenized_outputs['attention_mask'][i],
-        'labels': tokenized_outputs['input_ids'][i].clone()  # labels
+        'input_ids': tokenized_train_inputs['input_ids'][i],
+        'attention_mask': tokenized_train_inputs['attention_mask'][i],
+        'decoder_input_ids': tokenized_train_outputs['input_ids'][i],
+        'decoder_attention_mask': tokenized_train_outputs['attention_mask'][i],
+        'labels': tokenized_train_outputs['input_ids'][i].clone()  # Labels
     }
-    for i in range(len(tokenized_inputs['input_ids']))
+    for i in range(len(tokenized_train_inputs['input_ids']))
+]
+
+val_dataset = [
+    {
+        'input_ids': tokenized_val_inputs['input_ids'][i],
+        'attention_mask': tokenized_val_inputs['attention_mask'][i],
+        'decoder_input_ids': tokenized_val_outputs['input_ids'][i],
+        'decoder_attention_mask': tokenized_val_outputs['attention_mask'][i],
+        'labels': tokenized_val_outputs['input_ids'][i].clone()  # Labels
+    }
+    for i in range(len(tokenized_val_inputs['input_ids']))
 ]
 
 #define encoder-decoder model
@@ -54,33 +73,49 @@ training_args = Seq2SeqTrainingArguments(
     save_steps=1000,
     evaluation_strategy='steps',
     eval_steps=500,
-    num_train_epochs=5,  # increase number of epochs to 5
+    num_train_epochs=5,
     predict_with_generate=True
 )
-
-#define validation dataset (using the same dataset for simplicity, adjust later)
-eval_dataset = dataset
 
 #define optimizer and learning rate
 optimizer = torch.optim.AdamW(model.parameters(), lr=1e-4)
 
-#define Seq2SeqTrainer with evaluation dataset
+#define Seq2SeqTrainer with val_dataset
+
 trainer = Seq2SeqTrainer(
     model=model,
     args=training_args,
-    train_dataset=dataset,
-    eval_dataset=eval_dataset,
+    train_dataset=train_dataset,
+    eval_dataset=val_dataset,
     tokenizer=tokenizer,
     optimizers=(optimizer, None)
 )
 
 #train model
-for epoch in range(training_args.num_train_epochs):
-    print(f"Epoch {epoch + 1}/{training_args.num_train_epochs}")
-    trainer.train()
+trainer.train()
 
-    #display training metrics
-    train_metrics = trainer.evaluate()
-    print(f"Training metrics: {train_metrics}")
+#display training metrics
+train_metrics = trainer.evaluate()
+print(f"Training metrics: {train_metrics}")
 
-trainer.save_model('fine_tuned_model')
+def preprocess_word_problem(problem_text):
+    #tokenize the problem text
+    tokenized_problem = tokenizer(problem_text, return_tensors='pt', padding=True, truncation=True)
+    return tokenized_problem
+
+#sample word problems
+word_problem = "Paul has 3 books. He gives 1 book to Amelia. How many books does Paul have now?"
+
+print(word_problem)
+
+#preprocess word problem
+tokenized_input = preprocess_word_problem(word_problem)
+
+#generate answer
+output = model.generate(input_ids=tokenized_input['input_ids'], attention_mask=tokenized_input['attention_mask'])
+
+#decode the generated output tokens to text
+decoded_output = tokenizer.decode(output[0], skip_special_tokens=True)
+
+print(decoded_output)
+
