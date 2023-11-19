@@ -1,8 +1,8 @@
-import torch
-from transformers import EncoderDecoderModel, BertTokenizer, Seq2SeqTrainer, Seq2SeqTrainingArguments
 import pandas as pd
 import re
 from sklearn.model_selection import train_test_split
+import torch
+from transformers import EncoderDecoderModel, BertTokenizer, Seq2SeqTrainer, Seq2SeqTrainingArguments
 
 #load and preprocess data
 data = pd.read_csv('train.csv')
@@ -28,6 +28,12 @@ val_answers = val_data['Answer'].apply(lambda x: str(x)).tolist()
 
 #initializing tokenizer
 tokenizer = BertTokenizer.from_pretrained('bert-base-uncased')
+print(tokenizer.special_tokens_map)
+
+#retrieve id for the <s> token
+s_token_id = tokenizer.convert_tokens_to_ids("<s>")
+
+print(f"The <s> token ID is: {s_token_id}")
 
 #tokenize input and output sequences
 tokenized_train_inputs = tokenizer(train_questions, return_tensors='pt', padding=True, truncation=True)
@@ -103,19 +109,32 @@ def preprocess_word_problem(problem_text):
     tokenized_problem = tokenizer(problem_text, return_tensors='pt', padding=True, truncation=True)
     return tokenized_problem
 
-#sample word problems
+#sample word problem
 word_problem = "Paul has 3 books. He gives 1 book to Amelia. How many books does Paul have now?"
 
 print(word_problem)
 
 #preprocess word problem
+device = 'cuda:0'
 tokenized_input = preprocess_word_problem(word_problem)
+tokenized_input = {key: tensor.to(device) for key, tensor in tokenized_input.items()}
+print(tokenized_input)
+
+#wrap in batch
+#batched_input = {
+#    'input_ids': tokenized_input['input_ids'].unsqueeze(0),
+#    'attention_mask': tokenized_input['attention_mask'].unsqueeze(0)
+#}
 
 #generate answer
-output = model.generate(input_ids=tokenized_input['input_ids'], attention_mask=tokenized_input['attention_mask'])
+output = model.generate(input_ids=tokenized_input['input_ids'],
+                        attention_mask=tokenized_input['attention_mask'],
+                        decoder_start_token_id=100,
+                        max_length=20)
+
+#print(output)
 
 #decode the generated output tokens to text
 decoded_output = tokenizer.decode(output[0], skip_special_tokens=True)
 
 print(decoded_output)
-
