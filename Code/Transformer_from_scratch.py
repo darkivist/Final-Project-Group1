@@ -37,6 +37,7 @@ class PositionalEncoding(nn.Module):
         div_term : denominator used for positional encoding calculation
         pe[:, 0::2] : Sin similarity of the even indices 
         pe[:, 1::2] : cos similarity of the odd indices
+        buffer : saves the tensor in the model but doesn't use it as a parameter
         '''
         pe = torch.zeros(seq_lens, d_model)
 
@@ -61,7 +62,36 @@ class PositionalEncoding(nn.Module):
         return self.dropout(x)
 
 
+class LayerNormalization(nn.Module):
 
+    def __init__(self, eps: float = 10**-6):
+        super().__init__()
+        self.eps = eps
+        self.alpha = nn.Parameter(torch.ones(1))
+        self.bias  = nn.Parameter(torch.zeros(1))
+
+    def forward(self, x):
+        mean =  x.mean(dim = -1, keepdim=True)
+        std = x.std(dim = -1, keepdim = True)
+        return self.alpha * (x-mean) / (std + self.eps) + self.bias
+
+
+class FeedForwardBlock(nn.Module):
+
+    def __init__(self, d_model: int, d_ff: int, dropout: float):
+        super().__init__()
+        self.linear_1 = nn.Linear(d_model, d_ff)
+        self.dropout  = nn.Dropout(dropout)
+        self.linear_2 = nn.Linear(d_ff, d_model)
+
+    def forward(self, x):
+        return self.linear_2(self.dropout(torch.relu(self.linear_1(x))))
+
+
+
+
+class MultiheadAttention(nn.Module):
+    
 
 class Transformer(nn.Module):
 
