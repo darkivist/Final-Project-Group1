@@ -57,9 +57,10 @@ output = decoder_dense(decoder_combined_context)
 model = Model([encoder_inputs, decoder_inputs], output)
 
 # Compile the model
-model.compile(optimizer='adam', loss='sparse_categorical_crossentropy', metrics=['accuracy'])
+model.compile(optimizer='adam', loss='sparse_categorical_crossentropy', metrics=['accuracy']) ## Change metric to BLEU
 
-epochs = 50
+
+epochs = 25
 batch_size = 64
 
 # Train the model
@@ -91,3 +92,7 @@ predicted_output_text = tokenizer_target.sequences_to_texts(np.argmax(predicted_
 print("Input: ", input_text)
 print("Real Output: ", real_output_text)
 print("Predicted Output: ", predicted_output_text)
+
+'''
+WIll have to work on how to export this model and add my own inputs to it. Setting this aside as the last case scenario, in case transformer doesn't work.
+'''
