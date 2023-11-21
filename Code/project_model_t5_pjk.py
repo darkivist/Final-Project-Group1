@@ -50,7 +50,7 @@ train_dataset = [
         'attention_mask': tokenized_train_inputs['attention_mask'][i].to(device),
         'decoder_input_ids': tokenized_train_outputs['input_ids'][i].to(device),
         'decoder_attention_mask': tokenized_train_outputs['attention_mask'][i].to(device),
-        'labels': tokenized_train_outputs['input_ids'][i].to(device).clone()  # Labels
+        'labels': tokenized_train_outputs['input_ids'][i].to(device).clone()
     }
     for i in range(len(tokenized_train_inputs['input_ids']))
 ]
