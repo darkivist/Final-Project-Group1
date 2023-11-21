@@ -25,10 +25,10 @@ data['Processed_Question'] = data.apply(replace_number_placeholders, axis=1)
 train_data, val_data = train_test_split(data, test_size=0.2, random_state=42)
 
 train_questions = train_data['Processed_Question'].tolist()
-train_answers = train_data['Answer'].tolist()
+train_answers = train_data['Answer'].apply(lambda x: str(x)).tolist()
 
 val_questions = val_data['Processed_Question'].tolist()
-val_answers = train_data['Answer'].tolist()
+val_answers = val_data['Answer'].apply(lambda x: str(x)).tolist()
 
 print(val_data)
 
@@ -106,14 +106,14 @@ print(f"Training metrics: {train_metrics}")
 
 
 #show first five records/predictions from val dataset
-for i in range(5):
-    dict_item = val_dataset[i]
-    input_ids = dict_item['input_ids']
-    # Reshape input_ids to add batch and sequence length dimensions
-    input_ids = input_ids.unsqueeze(0).to(device)  # Add batch dimension and move to device
-    outputs = model.generate(input_ids)
-    prediction = tokenizer.decode(outputs[0], skip_special_tokens=True)  # Decode the output without special tokens
-    print(f"Prediction: {prediction}")
+#for i in range(5):
+#    dict_item = val_dataset[i]
+#    input_ids = dict_item['input_ids']
+#    # Reshape input_ids to add batch and sequence length dimensions
+#    input_ids = input_ids.unsqueeze(0).to(device)  # Add batch dimension and move to device
+#    outputs = model.generate(input_ids)
+#    prediction = tokenizer.decode(outputs[0], skip_special_tokens=True)  # Decode the output without special tokens
+#    print(f"Prediction: {prediction}")
 
 def preprocess_word_problem(problem_text):
     #tokenize the problem text
@@ -145,6 +145,6 @@ output = model.generate(input_ids=tokenized_input['input_ids'],
 #print("output:", output)
 
 #decode the generated output tokens to text
-decoded_output = tokenizer.decode(output[0], skip_special_tokens=True)
-prediction = float(decoded_output)
+prediction = tokenizer.decode(output[0], skip_special_tokens=True)
+
 print("Answer:", prediction)
