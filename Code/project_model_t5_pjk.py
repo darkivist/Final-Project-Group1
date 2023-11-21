@@ -25,10 +25,10 @@ data['Processed_Question'] = data.apply(replace_number_placeholders, axis=1)
 train_data, val_data = train_test_split(data, test_size=0.2, random_state=42)
 
 train_questions = train_data['Processed_Question'].tolist()
-train_answers = train_data['Answer'].apply(lambda x: str(x)).tolist()
+train_answers = train_data['Answer'].tolist()
 
 val_questions = val_data['Processed_Question'].tolist()
-val_answers = val_data['Answer'].apply(lambda x: str(x)).tolist()
+val_answers = train_data['Answer'].tolist()
 
 print(val_data)
 
@@ -146,5 +146,5 @@ output = model.generate(input_ids=tokenized_input['input_ids'],
 
 #decode the generated output tokens to text
 decoded_output = tokenizer.decode(output[0], skip_special_tokens=True)
-
-print("decoded output:", decoded_output)
+prediction = float(decoded_output)
+print("Answer:", prediction)
