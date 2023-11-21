@@ -11,9 +11,9 @@ data = pd.read_csv('train.csv')
 def replace_number_placeholders(row):
     def replace_number(match):
         number_index = int(match.group(1))  #extract number index
-        return str(row['Numbers'].split(' ')[number_index])  # Replace placeholder with actual value
+        return str(row['Numbers'].split(' ')[number_index])
 
-    return re.sub(r'number(\d+)', replace_number, row['Question'])  # Assuming the column name is 'Question'
+    return re.sub(r'number(\d+)', replace_number, row['Question'])
 
 #ensure 'ques' is a string
 data['Question'] = data['Question'].astype(str)
@@ -61,25 +61,22 @@ val_dataset = [
         'attention_mask': tokenized_val_inputs['attention_mask'][i].to(device),
         'decoder_input_ids': tokenized_val_outputs['input_ids'][i].to(device),
         'decoder_attention_mask': tokenized_val_outputs['attention_mask'][i].to(device),
-        'labels': tokenized_val_outputs['input_ids'][i].to(device).clone()  # Labels
+        'labels': tokenized_val_outputs['input_ids'][i].to(device).clone()
     }
     for i in range(len(tokenized_val_inputs['input_ids']))
 ]
 
-#print(val_dataset)
-
-
 #define training arguments
 training_args = Seq2SeqTrainingArguments(
     output_dir='./results',
-    per_device_train_batch_size=4,
-    per_device_eval_batch_size=4,
+    per_device_train_batch_size=64,
+    per_device_eval_batch_size=64,
     logging_dir='./logs',
     logging_steps=100,
     save_steps=1000,
-    evaluation_strategy='steps',
+    evaluation_strategy='epoch',
     eval_steps=500,
-    num_train_epochs=5,
+    num_train_epochs=100,
     predict_with_generate=True
 )
 
@@ -104,17 +101,6 @@ trainer.train()
 train_metrics = trainer.evaluate()
 print(f"Training metrics: {train_metrics}")
 
-
-#show first five records/predictions from val dataset
-#for i in range(5):
-#    dict_item = val_dataset[i]
-#    input_ids = dict_item['input_ids']
-#    # Reshape input_ids to add batch and sequence length dimensions
-#    input_ids = input_ids.unsqueeze(0).to(device)  # Add batch dimension and move to device
-#    outputs = model.generate(input_ids)
-#    prediction = tokenizer.decode(outputs[0], skip_special_tokens=True)  # Decode the output without special tokens
-#    print(f"Prediction: {prediction}")
-
 def preprocess_word_problem(problem_text):
     #tokenize the problem text
     tokenized_problem = tokenizer(problem_text, return_tensors='pt', padding=True, truncation=True)
@@ -131,18 +117,10 @@ tokenized_input = preprocess_word_problem(word_problem)
 tokenized_input = {key: tensor.to(device) for key, tensor in tokenized_input.items()}
 #print("tokenized input:",tokenized_input)
 
-#wrap in batch
-#batched_input = {
-#    'input_ids': tokenized_input['input_ids'].unsqueeze(0),
-#    'attention_mask': tokenized_input['attention_mask'].unsqueeze(0)
-#}
-
 #generate answer
 output = model.generate(input_ids=tokenized_input['input_ids'],
                         attention_mask=tokenized_input['attention_mask'],
                         max_length=200)
-
-#print("output:", output)
 
 #decode the generated output tokens to text
 prediction = tokenizer.decode(output[0], skip_special_tokens=True)
