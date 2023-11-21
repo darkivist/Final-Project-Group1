@@ -59,12 +59,14 @@ model = Model([encoder_inputs, decoder_inputs], output)
 # Compile the model
 model.compile(optimizer='adam', loss='sparse_categorical_crossentropy', metrics=['accuracy'])
 
-epochs = 10
+epochs = 50
 batch_size = 64
 
 # Train the model
 model.fit([input_sequences, target_sequences[:, :-1]], target_sequences[:, 1:], epochs=epochs, batch_size=batch_size, validation_split=0.2)
-
+'''
+ target_sequences[:, :-1]], target_sequences[:, 1:] : is called teacher forcing. 
+'''
 model.summary()
 
 
