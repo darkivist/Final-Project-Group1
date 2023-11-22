@@ -1,4 +1,6 @@
+
 # %%
+from torch.optim.lr_scheduler import StepLR
 import pandas as pd
 import torch
 from torch.utils.data import Dataset, DataLoader
@@ -62,10 +64,13 @@ model = GPT2LMHeadModel.from_pretrained(checkpoint).to(device)
 # Training
 loss_function = torch.nn.CrossEntropyLoss()
 optimizer = torch.optim.AdamW(model.parameters(), lr=1e-5)
+scheduler = StepLR(optimizer, step_size=10, gamma=0.9)
 
 # Training loop
-num_epochs = 50
+num_epochs = 90
 for epoch in range(num_epochs):
+    model.train()
+    total_loss = 0
     for batch in data_loader:
         input_ids = batch["input_ids"].to(device)
         attention_mask = batch["attention_mask"].to(device)
@@ -78,7 +83,12 @@ for epoch in range(num_epochs):
         loss.backward()
         optimizer.step()
 
-        print(f"Epoch: {epoch + 1}, Batch Loss: {loss.item()}")
+    scheduler.step()
+
+    average_loss = total_loss / len(data_loader)
+    print(f"Epoch: {epoch + 1}, Average Loss: {average_loss}, Learning Rate: {optimizer.param_groups[0]['lr']}")
+
+        #print(f"Epoch: {epoch + 1}, Batch Loss: {loss.item()}")
 #%%
 import pandas as pd
 import torch
@@ -159,7 +169,7 @@ for epoch in range(num_epochs):
 
 # %%
 # Input text to test
-input_text = "Carrie has 6 pineapples. She ate 3. How many does she have left?"
+input_text = "Carrie has 6 pineapples. She ate 3. How many pineapples does she have left?"
 
 # Tokenize the input
 input_ids = tokenizer.encode(input_text, return_tensors="pt", max_length=532, truncation=True).to(device)
