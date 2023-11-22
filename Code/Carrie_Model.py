@@ -1,77 +1,3 @@
-#%%
-# LOAD PACKAGES
-import pandas as pd
-import torch
-import torch.nn as nn
-#from transformers import GPT2LMHeadModel, GPT2Tokenizer
-from transformers import AutoTokenizer, GPT2LMHeadModel
-import torch.optim as optim
-from torch.utils.data import DataLoader
-
-device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
-#%%
-# Loading Data
-df = pd.read_csv('/home/ubuntu/NLP_Main/Final-Project-Group1/Code/cleaned_dataset.csv')
-mwp = df["Question"]
-mwp = list(obj for obj in mwp) #need to make pandas object into list of strings
-
-equation = df["Equation"]
-equation = list(obj for obj in equation)
-print(len(equation))
-print(len(mwp))
-#%%
-#Initializing Tokenizer and Getting Inputs
-checkpoint = "distilgpt2"
-tokenizer = AutoTokenizer.from_pretrained(checkpoint)
-tokenizer.pad_token = tokenizer.eos_token
-
-max_sequence_length = max(len(mwp), len(equation))
-
-inputs = tokenizer(mwp, padding="max_length", truncation=True, max_length=max_sequence_length, return_tensors="pt")
-inputs = {key: value.to(device) for key, value in inputs.items()}
-labels = tokenizer(equation, padding="max_length", truncation=True, max_length=max_sequence_length, return_tensors="pt")
-labels = {key: value.to(device) for key, value in labels.items()}
-print(inputs["input_ids"].shape)
-print(labels["input_ids"].shape)
-
-#%% 
-# Model 
-model = GPT2LMHeadModel.from_pretrained(checkpoint).to(device)
-#%%
-#Training
-loss = nn.CrossEntropyLoss()
-optimizer = optim.Adam(model.parameters(), lr=0.0001)
-#%%
-
-# %%
-n_epochs = 5
-
-for epoch in range(n_epochs):
-        # Forward pass
-        outputs = model(**inputs, labels=labels["input_ids"])
-        loss = outputs.loss
-
-        # Backward pass and optimization
-        optimizer.zero_grad()
-        loss.backward()
-        optimizer.step()
-
-    # Print the loss for each epoch
-        print(f"Epoch {epoch + 1}/{n_epochs}, Loss: {loss.item()}")
-#%%
-test_prompt = "David has 48 marbles. He puts them into 4 bags. How many marbles are there in each bag?"
-test_input = tokenizer(test_prompt, padding=True, truncation=True, max_length=max_sequence_length, return_tensors="pt")
-# Tokenize the test prompt
-
-output_ids = model.generate(test_input["input_ids"], max_length=50, num_beams=5, no_repeat_ngram_size=2, top_k=50, top_p=0.95, temperature=0.7)
-generated_equation = tokenizer.decode(output_ids[0], skip_special_tokens=True)
-
-# Print the generated equation
-print("Input Math Word Problem:")
-print(test_prompt)
-print("\nGenerated Equation:")
-print(generated_equation)
-
 # %%
 import pandas as pd
 import torch
@@ -138,7 +64,7 @@ loss_function = torch.nn.CrossEntropyLoss()
 optimizer = torch.optim.AdamW(model.parameters(), lr=1e-5)
 
 # Training loop
-num_epochs = 5
+num_epochs = 50
 for epoch in range(num_epochs):
     for batch in data_loader:
         input_ids = batch["input_ids"].to(device)
