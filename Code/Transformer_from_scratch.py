@@ -3,9 +3,70 @@ import torch.nn as nn
 import math
 
 
+'''
+Hi, A lot of comments here would be just me talking to myself and reminding what the function is for and is doing.
+'''
+
+class InputEmbedding(nn.Module):
+
+    def __init__(self, d_model: int, vocab_size: int):  ## This is called a constructor. Initializes the instance variables or you could say the inputs
+        '''
+        vocab size : as the name suggests it's the unique words in our data
+        d_model : Dimension vector of each word/token
+        '''
+        super().__init__()  ## super() is used to call a method from the parent class ( in this case the parent class is Neural Network for pytorch)
+        self.d_model = d_model
+        self.vocab_size = vocab_size
+        self.embedding  = nn.Embedding(vocab_size, d_model)
+
+    def forward(self, x):
+        ## Using nn.Embedding to create an input layer
+        return self.embedding(x) * math.sqrt(self.d_model)
+
+
+class PositionalEncoding(nn.Module):
+
+    def __init__(self, d_model: int, seq_lens: int, dropout: float):
+        super().__init__()
+        self.d_model = d_model
+        self.seq_lens = seq_lens
+        self.dropout = nn.Dropout(dropout)
+
+        '''
+        dropout : Dropout is a regularization technique used to prevent overfitting
+        pe : creating positional encoding matrix of seq_lens x d_model
+        position : A tensor to give position information or order to the input embeddings. Numerator used for positional encoding calculation
+        div_term : denominator used for positional encoding calculation
+        pe[:, 0::2] : Sin similarity of the even indices 
+        pe[:, 1::2] : cos similarity of the odd indices
+        buffer : saves the tensor in the model but doesn't use it as a parameter
+        '''
+        pe = torch.zeros(seq_lens, d_model)
+
+        position = torch.arange(0, seq_lens, dtype=torch.float).unsqueeze(1)
+        position = torch.arange(0, seq_lens, dtype=torch.float).unsqueeze(1)
+        div_term = torch.exp(torch.arange(0,d_model,2).float() * (-math.log(10000.0)/d_model))
+
+        pe[:, 0::2] = torch.sin(position*div_term)
+        pe[:, 1::2] = torch.cos(position*div_term)
+
+        pe = pe.unsqueeze(0) ## Unsqueezing to add extra dimensionn for batch dimension
+
+        self.register_buffer('pe', pe)
+
+    def forward(self,x):
+        '''
+        requires_grad_(False) : This is so positional encoding values are not used to compute gradients during backpropogation
+        self.pe[:, :x.shape[1], :] : This just takes the first 2 dimensions of the tensor - done to match the input layer
+        '''
+
+        x = x + (self.pe[:, :x.shape[1], :]).requires_grad_(False)
+        return self.dropout(x)
+
+
 class LayerNormalization(nn.Module):
 
-    def __init__(self, features: int, eps: float = 10 ** -6) -> None:
+    def __init__(self, features: int, eps: float = 10 ** -6):
         super().__init__()
         self.eps = eps
         self.alpha = nn.Parameter(torch.ones(features))  # alpha is a learnable parameter
@@ -34,45 +95,8 @@ class FeedForwardBlock(nn.Module):
         return self.linear_2(self.dropout(torch.relu(self.linear_1(x))))
 
 
-class InputEmbeddings(nn.Module):
-
-    def __init__(self, d_model: int, vocab_size: int) -> None:
-        super().__init__()
-        self.d_model = d_model
-        self.vocab_size = vocab_size
-        self.embedding = nn.Embedding(vocab_size, d_model)
-
-    def forward(self, x):
-        # (batch, seq_len) --> (batch, seq_len, d_model)
-        # Multiply by sqrt(d_model) to scale the embeddings according to the paper
-        return self.embedding(x) * math.sqrt(self.d_model)
 
 
-class PositionalEncoding(nn.Module):
-
-    def __init__(self, d_model: int, seq_len: int, dropout: float) -> None:
-        super().__init__()
-        self.d_model = d_model
-        self.seq_len = seq_len
-        self.dropout = nn.Dropout(dropout)
-        # Create a matrix of shape (seq_len, d_model)
-        pe = torch.zeros(seq_len, d_model)
-        # Create a vector of shape (seq_len)
-        position = torch.arange(0, seq_len, dtype=torch.float).unsqueeze(1)  # (seq_len, 1)
-        # Create a vector of shape (d_model)
-        div_term = torch.exp(torch.arange(0, d_model, 2).float() * (-math.log(10000.0) / d_model))  # (d_model / 2)
-        # Apply sine to even indices
-        pe[:, 0::2] = torch.sin(position * div_term)  # sin(position * (10000 ** (2i / d_model))
-        # Apply cosine to odd indices
-        pe[:, 1::2] = torch.cos(position * div_term)  # cos(position * (10000 ** (2i / d_model))
-        # Add a batch dimension to the positional encoding
-        pe = pe.unsqueeze(0)  # (1, seq_len, d_model)
-        # Register the positional encoding as a buffer
-        self.register_buffer('pe', pe)
-
-    def forward(self, x):
-        x = x + (self.pe[:, :x.shape[1], :]).requires_grad_(False)  # (batch, seq_len, d_model)
-        return self.dropout(x)
 
 
 class ResidualConnection(nn.Module):
@@ -89,6 +113,11 @@ class ResidualConnection(nn.Module):
 class MultiHeadAttentionBlock(nn.Module):
 
     def __init__(self, d_model: int, h: int, dropout: float) -> None:
+        '''
+        :param d_model:  Dimension vector of each token
+        :param h: number of heads
+        :param dropout: regularization technique, drops nodes randomly.
+        '''
         super().__init__()
         self.d_model = d_model  # Embedding vector size
         self.h = h  # Number of heads
@@ -213,7 +242,7 @@ class ProjectionLayer(nn.Module):
 
 class Transformer(nn.Module):
 
-    def __init__(self, encoder: Encoder, decoder: Decoder, src_embed: InputEmbeddings, tgt_embed: InputEmbeddings,
+    def __init__(self, encoder: Encoder, decoder: Decoder, src_embed: InputEmbedding, tgt_embed: InputEmbedding,
                  src_pos: PositionalEncoding, tgt_pos: PositionalEncoding, projection_layer: ProjectionLayer) -> None:
         super().__init__()
         self.encoder = encoder
@@ -244,8 +273,8 @@ class Transformer(nn.Module):
 def build_transformer(src_vocab_size: int, tgt_vocab_size: int, src_seq_len: int, tgt_seq_len: int, d_model: int = 512,
                       N: int = 6, h: int = 8, dropout: float = 0.1, d_ff: int = 2048) -> Transformer:
     # Create the embedding layers
-    src_embed = InputEmbeddings(d_model, src_vocab_size)
-    tgt_embed = InputEmbeddings(d_model, tgt_vocab_size)
+    src_embed = InputEmbedding(d_model, src_vocab_size)
+    tgt_embed = InputEmbedding(d_model, tgt_vocab_size)
 
     # Create the positional encoding layers
     src_pos = PositionalEncoding(d_model, src_seq_len, dropout)
