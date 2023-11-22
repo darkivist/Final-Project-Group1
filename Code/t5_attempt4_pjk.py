@@ -1,3 +1,6 @@
+#note - 1e-4 and batch size 16 gave 2 correct answers from first 5 records in val set
+#continue to refine
+
 from transformers import T5Tokenizer, T5ForConditionalGeneration, Seq2SeqTrainer, Seq2SeqTrainingArguments
 import torch
 from torch.utils.data import Dataset, DataLoader
@@ -102,14 +105,14 @@ optimizer = torch.optim.Adam(model.parameters(), lr=1e-4)
 #define training arguments
 training_args = Seq2SeqTrainingArguments(
     output_dir='./results',
-    per_device_train_batch_size=32,
-    per_device_eval_batch_size=32,
+    per_device_train_batch_size=16,
+    per_device_eval_batch_size=16,
     logging_dir='./logs',
     logging_steps=100,
     save_steps=1000,
     evaluation_strategy='epoch',
     eval_steps=500,
-    num_train_epochs=50,
+    num_train_epochs=100,
     predict_with_generate=True
 )
 #define optimizer and instantiate Seq2SeqTrainer
@@ -129,6 +132,28 @@ trainer.train()
 #display training metrics
 train_metrics = trainer.evaluate()
 print(f"Training metrics: {train_metrics}")
+
+#show first five records/predictions from val dataset
+for i in range(5):
+    dict_item = val_dataset[i]
+    input_ids = dict_item['input_ids']
+
+    # Get validation question and true answer
+    val_question = val_dataset.questions[i]  # Accessing the validation question directly from the dataset
+    true_answer = val_dataset.answers[i]  # Accessing the true answer directly from the dataset
+
+    # Reshape input_ids to add batch and sequence length dimensions
+    input_ids = input_ids.unsqueeze(0).to(device)  # Add batch dimension and move to device
+
+    # Generate prediction
+    outputs = model.generate(input_ids)
+    prediction = tokenizer.decode(outputs[0], skip_special_tokens=True)  # Decode the output without special tokens
+
+    # Print details
+    print(f"Validation Question: {val_question}")
+    print(f"Predicted Text: {prediction}")
+    print(f"True Answer: {true_answer}")
+
 
 #function to tokenize sample problem for testing
 def preprocess_word_problem(problem_text):
