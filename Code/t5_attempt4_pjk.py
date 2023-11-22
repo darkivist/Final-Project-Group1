@@ -1,4 +1,4 @@
-#note - 1e-4 and batch size 16 gave 2 correct answers from first 5 records in val set
+#note - 1e-5 and batch size 16 gave 2 correct answers from first 5 records in val set
 #continue to refine
 
 from transformers import T5Tokenizer, T5ForConditionalGeneration, Seq2SeqTrainer, Seq2SeqTrainingArguments
@@ -115,8 +115,7 @@ training_args = Seq2SeqTrainingArguments(
     num_train_epochs=100,
     predict_with_generate=True
 )
-#define optimizer and instantiate Seq2SeqTrainer
-optimizer = torch.optim.Adam(model.parameters(), lr=1e-5)
+#instantiate Seq2SeqTrainer
 trainer = Seq2SeqTrainer(
     model=model,
     args=training_args,
