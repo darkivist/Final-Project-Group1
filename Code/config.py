@@ -12,11 +12,12 @@ def get_config():
         "model_filename" : "tmodel_",
         "preload": None,
         "tokenizer_file": "tokenizer_{0}.json",
-        "experiment_name": "run/tmodel"
+        "experiment_name": "run/tmodel",
+        "datasource": 'gsm8k'
     }
 
 def get_weights_file_path(config, epochs:str):
     model_folder = config['model_folder']
-    model_basename = config['model_basename']
+    model_basename = config['model_filename']
     model_filename = f"{model_basename}{epochs}.pt"
     return str(Path('.')/ model_folder / model_filename)
