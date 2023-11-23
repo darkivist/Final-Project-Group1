@@ -11,7 +11,7 @@ from torch.utils.data import Dataset, DataLoader, random_split
 from dataset import MathWordQuestion, causal_mask
 from Transformer_from_scratch import build_transformer
 
-from torch.utils.tensorboard import SummaryWriter   
+from torch.utils.tensorboard import SummaryWriter
 from config import get_config, get_weights_file_path
 from tqdm import tqdm
 
@@ -34,7 +34,7 @@ def get_or_build_tokenizer(config, ds, text_column):
         tokenizer.pre_tokenizer = pre_tokenizers.Whitespace()
         trainer = trainers.WordLevelTrainer(special_tokens=["[UNK]", "[PAD]", "[SOS]", "[EOS]"], min_frequency=2)
 
-        # Assuming 'question' or 'answer' column contains the text data
+        #  'question' or 'answer' column contains the text data
         sentences = ds[text_column]
 
         tokenizer.train_from_iterator(sentences, trainer=trainer)
