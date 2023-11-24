@@ -12,7 +12,7 @@ from dataset import MathWordQuestion, causal_mask
 from Transformer_from_scratch import build_transformer
 
 from torch.utils.tensorboard import SummaryWriter
-from config import get_config, get_weights_file_path
+from config import get_config, get_weights_file_path, latest_weights
 from tqdm import tqdm
 
 
