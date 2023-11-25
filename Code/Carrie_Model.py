@@ -198,3 +198,39 @@ print(generated_equation)
 
 # %%
 ### USING OPTUNA FOR HYPERPARAMETER TUNING
+import optuna
+
+def objective(trial):
+    # Define hyperparameters to optimize
+    lr = trial.suggest_float('lr', 1e-6, 1e-3, log=True)
+    batch_size = trial.suggest_categorical('batch_size', [4, 8, 16, 32])
+
+    # Model, tokenizer, and data loader setup (keep this outside the objective function)
+    model = GPT2LMHeadModel.from_pretrained(checkpoint).to(device)
+    tokenizer = AutoTokenizer.from_pretrained(checkpoint)
+    tokenizer.pad_token = tokenizer.eos_token
+
+    math_word_problem_dataset = MathWordProblemDataset(df, tokenizer, max_sequence_length)
+    data_loader = DataLoader(math_word_problem_dataset, batch_size=batch_size, shuffle=True)
+
+    # Optimizer setup
+    optimizer = torch.optim.AdamW(model.parameters(), lr=lr)
+
+    # Training loop
+    num_epochs = 6
+    for epoch in range(num_epochs):
+        for batch in data_loader:
+            input_ids = batch["input_ids"]
+            attention_mask = batch["attention_mask"]
+            labels = batch["labels"]
+            outputs = model(input_ids, attention_mask=attention_mask, labels=labels)
+            loss = outputs.loss
+
+            optimizer.zero_grad()
+            loss.backward()
+            optimizer.step()
+
+    # Return a metric to optimize (you might want to return a validation metric)
+    return loss.item()
+
+# %%
