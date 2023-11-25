@@ -203,7 +203,7 @@ import optuna
 def objective(trial):
     # Define hyperparameters to optimize
     lr = trial.suggest_float('lr', 1e-6, 1e-3, log=True)
-    batch_size = trial.suggest_categorical('batch_size', [4, 8, 16, 32])
+    batch_size = trial.suggest_categorical('batch_size', [4, 8, 12])
 
     # Model, tokenizer, and data loader setup (keep this outside the objective function)
     model = GPT2LMHeadModel.from_pretrained(checkpoint).to(device)
@@ -232,5 +232,15 @@ def objective(trial):
 
     # Return a metric to optimize (you might want to return a validation metric)
     return loss.item()
+
+# %%
+study = optuna.create_study(direction='minimize')  # or 'maximize' depending on your goal
+study.optimize(objective, n_trials=100)
+
+best_params = study.best_params
+best_loss = study.best_value
+
+print(f"Best hyperparameters: {best_params}")
+print(f"Best loss: {best_loss}")
 
 # %%
