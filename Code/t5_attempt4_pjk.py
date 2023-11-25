@@ -96,7 +96,7 @@ def objective(trial):
     num_training_epochs = trial.suggest_int('num_epochs', 1, 100)
     model = T5ForConditionalGeneration.from_pretrained("t5-small")
     tokenizer = T5Tokenizer.from_pretrained("t5-small")
-    optimizer_name = trial.suggest_categorical('optimizer', ['Adam', 'SGD', 'RMSprop', 'AdamW', 'AdaDelta'])
+    optimizer_name = trial.suggest_categorical('optimizer', ['Adam', 'SGD', 'RMSprop', 'AdamW', 'Adadelta'])
     if optimizer_name == 'Adam':
         optimizer = torch.optim.Adam(model.parameters(), lr=learning_rate)
     elif optimizer_name == 'SGD':
@@ -105,8 +105,8 @@ def objective(trial):
         optimizer = torch.optim.RMSprop(model.parameters(), lr=learning_rate)
     elif optimizer_name == 'AdamW':
         optimizer = torch.optim.AdamW(model.parameters(), lr=learning_rate)
-    elif optimizer_name == 'AdaDelta':
-        optimizer = torch.optim.AdaDelta(model.parameters(), lr=learning_rate)
+    elif optimizer_name == 'Adadelta':
+        optimizer = torch.optim.Adadelta(model.parameters(), lr=learning_rate)
 
     #define training arguments
     training_args = Seq2SeqTrainingArguments(
