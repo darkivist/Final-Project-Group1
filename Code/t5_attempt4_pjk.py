@@ -89,14 +89,24 @@ val_answers = val_data['Answer'].tolist()
 tokenizer = T5Tokenizer.from_pretrained("t5-small")
 model = T5ForConditionalGeneration.from_pretrained("t5-small")
 
-#define the objective function for optuna
+#define function for hyperparameter tuning
 def objective(trial):
     learning_rate = trial.suggest_float('learning_rate', 1e-6, 1e-3, log=True)
     batch_size = trial.suggest_categorical('batch_size', [8, 16, 32, 64])
     num_training_epochs = trial.suggest_int('num_epochs', 1, 100)
     model = T5ForConditionalGeneration.from_pretrained("t5-small")
     tokenizer = T5Tokenizer.from_pretrained("t5-small")
-    optimizer = torch.optim.Adam(model.parameters(), lr=learning_rate)
+    optimizer_name = trial.suggest_categorical('optimizer', ['Adam', 'SGD', 'RMSprop', 'AdamW', 'AdaDelta'])
+    if optimizer_name == 'Adam':
+        optimizer = torch.optim.Adam(model.parameters(), lr=learning_rate)
+    elif optimizer_name == 'SGD':
+        optimizer = torch.optim.SGD(model.parameters(), lr=learning_rate)
+    elif optimizer_name == 'RMSprop':
+        optimizer = torch.optim.RMSprop(model.parameters(), lr=learning_rate)
+    elif optimizer_name == 'AdamW':
+        optimizer = torch.optim.AdamW(model.parameters(), lr=learning_rate)
+    elif optimizer_name == 'AdaDelta':
+        optimizer = torch.optim.AdaDelta(model.parameters(), lr=learning_rate)
 
     #define training arguments
     training_args = Seq2SeqTrainingArguments(
@@ -135,17 +145,19 @@ def objective(trial):
 
     return val_loss
 
-#perform hyperparameter tuning
+#perform hyperparameter studies
 study = optuna.create_study(direction='minimize')
 study.optimize(objective, n_trials=100)
 
-#get the best hyperparameters
+#return the best hyperparameters
 best_learning_rate = study.best_params['learning_rate']
 best_batch_size = study.best_params['batch_size']
 num_training_epochs = study.best_params['num_epochs']
+best_optimizer = study.best_params['optimizer']
 print("Best learning rate:", best_learning_rate)
 print("Best batch size:", best_batch_size)
 print("Best number of epochs:", num_training_epochs)
+print("Best optimizer:", best_optimizer)
 
 #create custom train/val datasets
 train_dataset = CustomDataset(train_questions, train_equations, train_answers, tokenizer)
@@ -158,8 +170,8 @@ val_dataset = CustomDataset(val_questions, val_equations, val_answers, tokenizer
 #use the dataLoader for training
 model.to(device)
 
-#set optimizer and optimized learning rate
-optimizer = torch.optim.Adam(model.parameters(), lr=best_learning_rate)
+#set optimized optimizer (lol) and optimized learning rate
+optimizer = best_optimizer
 
 #define optimized training arguments
 training_args = Seq2SeqTrainingArguments(
