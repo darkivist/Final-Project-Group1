@@ -94,7 +94,7 @@ import pandas as pd
 import torch
 from torch.utils.data import Dataset, DataLoader
 from transformers import AutoTokenizer
-
+device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 class MathWordProblemDataset(Dataset):
     def __init__(self, dataframe, tokenizer, max_sequence_length):
         self.mwp = dataframe["Question"].tolist()
