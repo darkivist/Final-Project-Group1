@@ -197,3 +197,4 @@ print("\nGenerated Equation:")
 print(generated_equation)
 
 # %%
+### USING OPTUNA FOR HYPERPARAMETER TUNING
