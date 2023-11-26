@@ -90,6 +90,8 @@ for epoch in range(num_epochs):
 
         #print(f"Epoch: {epoch + 1}, Batch Loss: {loss.item()}")
 #%%
+
+
 import pandas as pd
 import torch
 from torch.utils.data import Dataset, DataLoader
@@ -195,6 +197,8 @@ print("Input Math Word Problem:")
 print(input_text)
 print("\nGenerated Equation:")
 print(generated_equation)
+del input_ids, attention_mask, labels, outputs, loss
+torch.cuda.empty_cache()
 
 # %%
 ### USING OPTUNA FOR HYPERPARAMETER TUNING
@@ -242,5 +246,10 @@ best_loss = study.best_value
 
 print(f"Best hyperparameters: {best_params}")
 print(f"Best loss: {best_loss}")
+
+
+# %%
+del input_ids, attention_mask, labels, outputs, loss
+torch.cuda.empty_cache()
 
 # %%
