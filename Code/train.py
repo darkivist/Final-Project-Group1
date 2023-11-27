@@ -57,6 +57,7 @@ def run_validation(model, validation_ds, tokenizer_src, tokenizer_tgt, max_len, 
 
             assert encoder_input.size(0) == 1
 
+
             model_output = greedy_decode(model, encoder_input,encoder_mask, tokenizer_src,tokenizer_tgt,max_len,device)
 
             source_text = batch['src_text'][0]
@@ -76,17 +77,15 @@ def run_validation(model, validation_ds, tokenizer_src, tokenizer_tgt, max_len, 
                 break
 
 
+def preprocess_text(text):
+    # Add any additional characters you want to remove in the following line
+    special_characters = ['#', '<', '>']
 
+    # Replace special characters with an empty string
+    for char in special_characters:
+        text = text.replace(char, '')
 
-def get_all_sentences(ds, lang):
-    '''
-    :param ds: this is just the data set
-    :param lang: this is to choose to tokenize the question or the answer.
-    :return:
-    '''
-    for item in ds:
-        yield item[lang]
-
+    return text
 
 def get_or_build_tokenizer(config, ds, text_column):
     assert isinstance(text_column, str), f"Text column should be a string, but received {type(text_column)}"
@@ -112,10 +111,11 @@ def get_ds(config):
     The lang_src, and lang_tgt might give some trouble later. will have to change it.
     '''
     print(ds_raw)
+    ds_modified = ds_raw.map(lambda example: {'question': preprocess_text(example['question']),
+                                              'answer': preprocess_text(example['answer'])})
 
-    tokenizer_src = get_or_build_tokenizer(config, ds_raw, 'question')
-
-    tokenizer_tgt = get_or_build_tokenizer(config, ds_raw, 'answer')
+    tokenizer_src = get_or_build_tokenizer(config, ds_modified, 'question')
+    tokenizer_tgt = get_or_build_tokenizer(config, ds_modified, 'answer')
 
     train_ds_size = int(0.9* len(ds_raw))
     val_ds_size = len(ds_raw) - train_ds_size
@@ -225,10 +225,3 @@ def train_model(config):
 if __name__ == "__main__":
     config = get_config()
     train_model(config)
-
-
-
-
-
-
-

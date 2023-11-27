@@ -45,8 +45,7 @@ class PositionalEncoding(nn.Module):
 
         position = torch.arange(0, seq_lens, dtype=torch.float).unsqueeze(1)
         position = torch.arange(0, seq_lens, dtype=torch.float).unsqueeze(1)
-        #div_term = torch.exp(torch.arange(0,d_model,2).float() * (-math.log(10000.0)/d_model))
-        div_term = torch.exp(torch.arange(0, d_model, 2).float() * (-math.log(10000.0) / (d_model - 1)))
+        div_term = torch.exp(torch.arange(0,d_model,2).float() * (-math.log(10000.0)/d_model))
 
         pe[:, 0::2] = torch.sin(position*div_term)
         pe[:, 1::2] = torch.cos(position*div_term)
@@ -123,6 +122,7 @@ class MultiHeadAttentionBlock(nn.Module):
         self.d_model = d_model  # Embedding vector size
         self.h = h  # Number of heads
         # Make sure d_model is divisible by h
+        #print(d_model, h)
         assert d_model % h == 0, "d_model is not divisible by h"
 
         self.d_k = d_model // h  # Dimension of vector seen by each head
@@ -272,7 +272,7 @@ class Transformer(nn.Module):
 
 
 def build_transformer(src_vocab_size: int, tgt_vocab_size: int, src_seq_len: int, tgt_seq_len: int, d_model: int = 512,
-                      N: int = 6, h: int = 8, dropout: float = 0.1, d_ff: int = 2048) -> Transformer:
+                      N: int = 6, h: int = 32, dropout: float = 0.1, d_ff: int = 2048) -> Transformer:
     # Create the embedding layers
     src_embed = InputEmbedding(d_model, src_vocab_size)
     tgt_embed = InputEmbedding(d_model, tgt_vocab_size)
