@@ -1,6 +1,3 @@
-#note - 1e-5 and batch size 16 gave 2 correct answers from first 5 records in val set
-#continue to refine
-
 from transformers import T5Tokenizer, T5ForConditionalGeneration, Seq2SeqTrainer, Seq2SeqTrainingArguments
 import torch
 from torch.utils.data import Dataset, DataLoader
@@ -139,17 +136,31 @@ def objective(trial):
     #train model
     trainer.train()
 
-    #get validation loss
-    val_metrics = trainer.evaluate()
-    val_loss = val_metrics['eval_loss']
+    #calculate the number of exact matches with validation set
+    exact_matches = 0
+    for i in range(len(val_dataset)):
+        dict_item = val_dataset[i]
+        input_ids = dict_item['input_ids'].unsqueeze(0).to(device)
 
-    return val_loss
+        #generate prediction
+        outputs = model.generate(input_ids)
+        generated_sequence = tokenizer.decode(outputs[0], skip_special_tokens=True)
+
+        #get the reference (ground truth) sequence
+        reference_sequence = val_answers[i]
+
+        #check for exact match
+        if generated_sequence == reference_sequence:
+            exact_matches += 1
+
+    #return the negative of exact matches (as optuna tries to minimize)
+    return -exact_matches
 
 #perform hyperparameter studies
-study = optuna.create_study(direction='minimize')
+study = optuna.create_study(direction='maximize')
 study.optimize(objective, n_trials=100)
 
-#return the best hyperparameters
+#return best hyperparameters
 best_learning_rate = study.best_params['learning_rate']
 best_batch_size = study.best_params['batch_size']
 num_training_epochs = study.best_params['num_epochs']
@@ -231,7 +242,7 @@ def preprocess_word_problem(problem_text):
     return tokenized_problem
 
 #sample word problem
-word_problem = "Paul has 3.0 books. He gives 1.0 book to Amelia and another to Megan. How many books does Paul have now?"
+word_problem = "Paul has 3.0 books. He gives 1.0 book to Amelia. How many books does Paul have now?"
 
 print("Word problem:", word_problem)
 
