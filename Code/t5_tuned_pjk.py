@@ -138,7 +138,11 @@ def objective(trial):
         generated_sequence = tokenizer.decode(outputs[0], skip_special_tokens=True)
 
         #get the reference (ground truth) sequence
-        reference_sequence = val_answers[i]  # Assuming 'val_answers' contains ground truth sequences
+        reference_sequence = val_answers[i]
+
+        #convert reference_sequence to string
+        if not isinstance(reference_sequence, str):
+            reference_sequence = str(reference_sequence)
 
         #split sequences into tokens
         generated_tokens = generated_sequence.split()
@@ -147,7 +151,7 @@ def objective(trial):
         #count total tokens
         total_tokens += len(reference_tokens)
 
-        # Compare tokens to calculate accuracy
+        #compare tokens to calculate accuracy
         for gen_token, ref_token in zip(generated_tokens, reference_tokens):
             if gen_token == ref_token:
                 correct_tokens += 1
