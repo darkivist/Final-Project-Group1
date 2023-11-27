@@ -93,17 +93,7 @@ def objective(trial):
     num_training_epochs = trial.suggest_int('num_epochs', 1, 100)
     model = T5ForConditionalGeneration.from_pretrained("t5-small")
     tokenizer = T5Tokenizer.from_pretrained("t5-small")
-    optimizer_name = trial.suggest_categorical('optimizer', ['Adam', 'SGD', 'RMSprop', 'AdamW', 'Adadelta'])
-    if optimizer_name == 'Adam':
-        optimizer = torch.optim.Adam(model.parameters(), lr=learning_rate)
-    elif optimizer_name == 'SGD':
-        optimizer = torch.optim.SGD(model.parameters(), lr=learning_rate)
-    elif optimizer_name == 'RMSprop':
-        optimizer = torch.optim.RMSprop(model.parameters(), lr=learning_rate)
-    elif optimizer_name == 'AdamW':
-        optimizer = torch.optim.AdamW(model.parameters(), lr=learning_rate)
-    elif optimizer_name == 'Adadelta':
-        optimizer = torch.optim.Adadelta(model.parameters(), lr=learning_rate)
+    optimizer = torch.optim.Adam(model.parameters(), lr=learning_rate)
 
     #define training arguments
     training_args = Seq2SeqTrainingArguments(
@@ -136,8 +126,9 @@ def objective(trial):
     #train model
     trainer.train()
 
-    #calculate the number of exact matches with validation set
-    exact_matches = 0
+    #calculate token-level accuracy on validation set
+    total_tokens = 0
+    correct_tokens = 0
     for i in range(len(val_dataset)):
         dict_item = val_dataset[i]
         input_ids = dict_item['input_ids'].unsqueeze(0).to(device)
@@ -147,28 +138,38 @@ def objective(trial):
         generated_sequence = tokenizer.decode(outputs[0], skip_special_tokens=True)
 
         #get the reference (ground truth) sequence
-        reference_sequence = val_answers[i]
+        reference_sequence = val_answers[i]  # Assuming 'val_answers' contains ground truth sequences
 
-        #check for exact match
-        if generated_sequence == reference_sequence:
-            exact_matches += 1
+        #split sequences into tokens
+        generated_tokens = generated_sequence.split()
+        reference_tokens = reference_sequence.split()
 
-    #return the negative of exact matches (as optuna tries to minimize)
-    return -exact_matches
+        #count total tokens
+        total_tokens += len(reference_tokens)
 
-#perform hyperparameter studies
-study = optuna.create_study(direction='maximize')
-study.optimize(objective, n_trials=100)
+        # Compare tokens to calculate accuracy
+        for gen_token, ref_token in zip(generated_tokens, reference_tokens):
+            if gen_token == ref_token:
+                correct_tokens += 1
+
+    #calculate token-level accuracy
+    token_accuracy = correct_tokens / total_tokens if total_tokens > 0 else 0.0
+
+    #return negative of accuracy (as optuna minimizes)
+    return -token_accuracy
+
+
+#create study
+study = optuna.create_study(direction='maximize')  # Maximizing token-level accuracy
+study.optimize(objective, n_trials=50)
 
 #return best hyperparameters
 best_learning_rate = study.best_params['learning_rate']
 best_batch_size = study.best_params['batch_size']
 num_training_epochs = study.best_params['num_epochs']
-best_optimizer = study.best_params['optimizer']
 print("Best learning rate:", best_learning_rate)
 print("Best batch size:", best_batch_size)
 print("Best number of epochs:", num_training_epochs)
-print("Best optimizer:", best_optimizer)
 
 #create custom train/val datasets
 train_dataset = CustomDataset(train_questions, train_equations, train_answers, tokenizer)
@@ -181,8 +182,8 @@ val_dataset = CustomDataset(val_questions, val_equations, val_answers, tokenizer
 #use the dataLoader for training
 model.to(device)
 
-#set optimized optimizer (lol) and optimized learning rate
-optimizer = best_optimizer
+#set optimizer and optimized learning rate
+optimizer = torch.optim.Adam(model.parameters(), lr=best_learning_rate)
 
 #define optimized training arguments
 training_args = Seq2SeqTrainingArguments(
