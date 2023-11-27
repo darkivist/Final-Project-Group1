@@ -999,3 +999,114 @@ chal-997,"At the zoo, a cage had 3 snakes and 75 alligators. If 82 snakes and 19
 chal-998,Paige was helping her mom plant flowers and together they planted 55 seeds. They put 15 seeds in each flower bed and only 60 seeds grew into flowers in each flower bed.,How many flowers did they grow?,( 60.0 * ( 55.0 / 15.0 ) ),220,Multiplication
 chal-999,Mary is baking a cake. The recipe calls for 7 cups of sugar and 10 cups of flour. She already put in 4 cups of sugar.,How many more cups of sugar does she need to add?,( 7.0 - 4.0 ),3,Subtraction
 chal-1000,The grasshopper and the frog had a jumping contest. The grasshopper jumped 13 inches. The grasshopper jumped 2 inches farther than the grasshopper.,How far did the frog jump?,( 13.0 - 2.0 ),11,Subtraction
+chal-8,Alice has a collection of 60 stamps. If she gives away 18 stamps, how many stamps does Alice have now?,(60.0 - 18.0),42,Subtraction
+chal-9,The school library has 150 books. If 40% of them are fiction, how many books are not fiction?,(0.60 * 150.0),90,Multiplication
+chal-10,A rectangular garden has a length of 12 meters and a width of 8 meters. ,What is the area of the garden?,(12.0 * 8.0),96,Multiplication
+chal-11,A box contains 200 candies. If Sara eats 50 candies, what percentage of candies does she eat?,((50.0 / 200.0) * 100),25,Percentage
+chal-12,A train travels at a speed of 80 km/h. If it travels for 2.5 hours, how far does the train travel?,(80.0 * 2.5),200,Multiplication
+chal-13,Karen bought a dress for $45 and a pair of shoes for $30. How much did Karen spend in total?,(45.0 + 30.0),75,Addition
+chal-14,The rectangular swimming pool has a length of 15 meters and a width of 6 meters., What is the perimeter of the pool?,(2 * (15.0 + 6.0)),42,Addition
+chal-15,A bakery produces 100 loaves of bread each day. If they operate for 4 days, how many loaves do they produce in total?,(100.0 * 4.0),400,Multiplication
+chal-16,There are 80 students. If 30% of them are in the art club, how many students are in the art club?,(0.30 * 80.0),24,Multiplication
+chal-17,A laptop is on sale, and there is a 15% discount on its original price of $800. How much money will the customer save?,(0.15 * 800.0),120,Multiplication
+chal-18,Mike has a rectangular table with a length of 10 feet and a width of 4 feet. What is the area of the table?,(10.0 * 4.0),40,Multiplication
+chal-19,The store has 50 t-shirts. If 20% of them are on sale, how many t-shirts are not on sale?,(0.80 * 50.0),40,Multiplication
+chal-20,A box contains 120 pencils. If 25% of them are colored pencils, how many pencils are not colored?,(0.75 * 120.0),90,Multiplication
+chal-21,Liam is organizing books on his shelf. He has 40 books in total, and 15 of them are mystery novels. What percentage of Liam's books are mystery novels?,((15.0 / 40.0) * 100),37.5,Percentage
+chal-22,A company produces 300 units of a product. If 10% of them are defective, how many units are not defective?,(0.90 * 300.0),270,Multiplication
+chal-23,A rectangular room has a length of 14 feet and a width of 12 feet., What is the area of the room?,(14.0 * 12.0),168,Multiplication
+chal-24,The school choir has 40 members. If 25% of them sing soprano, how many members do not sing soprano?,(0.75 * 40.0),30,Multiplication
+chal-25,A car travels a distance of 120 miles at a speed of 60 miles per hour., How long does it take for the car to complete the journey?,(120.0 / 60.0),2,Division
+chal-26,There are 60 students in a science fair. If 40% of them present projects, how many students do not present projects?,(0.60 * 60.0),36,Multiplication
+chal-27,A rectangular box has dimensions 8 cm by 6 cm by 4 cm., What is the volume of the box?,(8.0 * 6.0 * 4.0),192,Multiplication
+chal-28,Emily has a rectangular rug with a length of 6 feet and a width of 5 feet., What is the area of the rug?,(6.0 * 5.0),30,Multiplication
+chal-29,A store is offering a 10% discount on a $60 item., How much money will the customer save?,(0.10 * 60.0),6,Multiplication
+chal-30,There are 25 students in a chess club. If 60% of them play chess, how many students play chess?,(0.60 * 25.0),15,Multiplication
+chal-31,Alice has a rectangular garden with a length of 16 meters and a width of 9 meters. ,What is the perimeter of the garden?,(2 * (16.0 + 9.0)),50,Addition
+chal-32,A box contains 150 chocolates. If 20% of them are dark chocolates, how many chocolates are not dark?,(0.80 * 150.0),120,Multiplication
+chal-33,A soccer field has a length of 80 yards and a width of 50 yards., What is the perimeter of the field?,(2 * (80.0 + 50.0)),260,Addition
+chal-34,There are 70 students in a drama club. If 30% of them are actors, how many students are not actors?,(0.70 * 70.0),49,Multiplication
+chal-35,A bakery produces 80 cupcakes each day. If they operate for 3 days, how many cupcakes do they produce in total?,(80.0 * 3.0),240,Multiplication
+chal-36,A rectangular pool has a length of 18 meters and a width of 10 meters., What is the area of the pool?,(18.0 * 10.0),180,Multiplication
+chal-37,There are 45 students in a math competition. If 50% of them solve a particular problem, how many students do not solve the problem?,(0.50 * 45.0),22.5,Multiplication
+chal-38,The store has a sale with a 30% discount on a $120 item., How much money will the customer save?,(0.30 * 120.0),36,Multiplication
+chal-39,A rectangular garden has a length of 15 meters and a width of 7 meters., What is the perimeter of the garden?,(2 * (15.0 + 7.0)),44,Addition
+chal-40,Mia has 40 marbles. If she loses 12 marbles, how many marbles does Mia have left?,(40.0 - 12.0),28,Subtraction
+chal-41,A box contains 200 toy cars. If 25% of them are red, how many toy cars are not red?,(0.75 * 200.0),150,Multiplication
+chal-42,The school orchestra has 50 members. If 20% of them play the violin, how many members do not play the violin?,(0.80 * 50.0),40,Multiplication
+chal-43,A rectangular room has dimensions 12 feet by 10 feet., What is the area of the room?,(12.0 * 10.0),120,Multiplication
+chal-44,A bakery produces 150 donuts each day. If they operate for 5 days, how many donuts do they produce in total?,(150.0 * 5.0),750,Multiplication
+chal-45,Kevin has a rectangular box with a length of 8 inches, a width of 6 inches and a height of 4 inches. What is the volume of the box?,(8.0 * 6.0 * 4.0),192,Multiplication
+chal-46,A store sells 80 pairs of socks. If 15% of them are ankle socks, how many pairs are not ankle socks?,(0.85 * 80.0),68,Multiplication
+chal-47,There are 30 students in a language club. If 40% of them speak Spanish, how many students do not speak Spanish?,(0.60 * 30.0),18,Multiplication
+chal-48,A car travels a distance of 150 miles at a speed of 50 miles per hour. ,How long does it take for the car to complete the journey?,(150.0 / 50.0),3,Division
+chal-49,The store has a buy-one-get-one-free offer on $40 shoes., How much money will a customer save if they buy two pairs?,(40.0),40,Constant
+chal-50,A rectangular pool has a length of 20 meters and a width of 5 meters., What is the area of the pool?,(20.0 * 5.0),100,Multiplication
+chal-51,There are 60 students in a robotics club. If 25% of them build robots, how many students do not build robots?,(0.75 * 60.0),45,Multiplication
+chal-52,A box contains 100 pens. If 30% of them are blue, how many pens are not blue?,(0.70 * 100.0),70,Multiplication
+chal-53,The school has 200 notebooks. If 20% of them are graph paper notebooks, how many notebooks are not graph paper?,(0.80 * 200.0),160,Multiplication
+chal-54,A rectangular room has a length of 14 feet and a width of 8 feet., What is the perimeter of the room?,(2 * (14.0 + 8.0)),44,Addition
+chal-55,Alice has a collection of 50 CDs. If she gives away 15 CDs, how many CDs does Alice have now?,(50.0 - 15.0),35,Subtraction
+chal-56,The school library has 120 books. If 25% of them are reference books, how many books are not reference books?,(0.75 * 120.0),90,Multiplication
+chal-57,A car travels at a speed of 60 km/h. If it travels for 4 hours, how far does the car travel?,(60.0 * 4.0),240,Multiplication
+chal-58,Mary has a rectangular table with a length of 12 feet and a width of 5 feet., What is the area of the table?,(12.0 * 5.0),60,Multiplication
+chal-59,The store offers a 20% discount on a $90 item. ,How much money will the customer save?,(0.20 * 90.0),18,Multiplication
+chal-60,A rectangular garden has a length of 18 meters and a width of 6 meters. ,What is the area of the garden?,(18.0 * 6.0),108,Multiplication
+chal-61,If there are 30 students in a class and 15% of them are absent, how many students are present?,(0.85 * 30.0),25.5,Multiplication
+chal-62,A bakery produces 80 cakes each day. If they operate for 3 days, how many cakes do they produce in total?,(80.0 * 3.0),240,Multiplication
+chal-63,There are 40 students in a coding club. If 50% of them code in Python, how many students code in Python?,(0.50 * 40.0),20,Multiplication
+chal-64,A rectangular box has dimensions 10 cm by 8 cm by 6 cm. ,What is the volume of the box?,(10.0 * 8.0 * 6.0),480,Multiplication
+chal-65,A store sells 150 pairs of sunglasses. If 10% of them are polarized, how many pairs are not polarized?,(0.90 * 150.0),135,Multiplication
+chal-66,The school orchestra has 60 members. If 30% of them play the flute, how many members do not play the flute?,(0.70 * 60.0),42,Multiplication
+chal-67,A car travels a distance of 180 miles at a speed of 60 miles per hour. ,How long does it take for the car to complete the journey?,(180.0 / 60.0),3,Division
+chal-68,The store has a buy-two-get-one-free offer on $50 shirts. ,How much money will a customer save if they buy three shirts?,(50.0 * 2),100,Multiplication
+chal-69,A rectangular pool has a length of 25 meters and a width of 8 meters., What is the area of the pool?,(25.0 * 8.0),200,Multiplication
+chal-70,There are 35 students in a chess club. If 40% of them are beginners, how many students are experienced players?,(0.60 * 35.0),21,Multiplication
+chal-71,A store sells 120 smartphones. If 20% of them are Android, how many smartphones are not Android?,(0.80 * 120.0),96,Multiplication
+chal-72,A rectangular room has dimensions 16 feet by 10 feet. What is the area of the room?,(16.0 * 10.0),160,Multiplication
+chal-73,The school has 250 notebooks. If 15% of them are spiral-bound, how many notebooks are not spiral-bound?,(0.85 * 250.0),212.5,Multiplication
+chal-74,A rectangular room has a length of 20 feet and a width of 12 feet. ,What is the perimeter of the room?,(2 * (20.0 + 12.0)),64,Addition
+chal-75,There are 50 students in a robotics club. If 25% of them build robots, how many students do not build robots?,(0.75 * 50.0),37.5,Multiplication
+chal-76,A store has a sale with a 15% discount on a $70 item., How much money will the customer save?,(0.15 * 70.0),10.5,Multiplication
+chal-77,A rectangular garden has a length of 14 meters and a width of 7 meters., What is the perimeter of the garden?,(2 * (14.0 + 7.0)),42,Addition
+chal-71,A store sells 120 smartphones. If 20% of them are Android, how many smartphones are not Android?,(0.80 * 120.0),96,Multiplication
+chal-72,A rectangular room has dimensions 16 feet by 10 feet., What is the area of the room?,(16.0 * 10.0),160,Multiplication
+chal-73,The school has 250 notebooks. If 15% of them are spiral-bound, how many notebooks are not spiral-bound?,(0.85 * 250.0),212.5,Multiplication
+chal-74,A rectangular room has a length of 20 feet and a width of 12 feet. ,What is the perimeter of the room?,(2 * (20.0 + 12.0)),64,Addition
+chal-75,There are 50 students in a robotics club. If 25% of them build robots, how many students do not build robots?,(0.75 * 50.0),37.5,Multiplication
+chal-76,A store has a sale with a 15% discount on a $70 item., How much money will the customer save?,(0.15 * 70.0),10.5,Multiplication
+chal-77,A rectangular garden has a length of 14 meters and a width of 7 meters., What is the perimeter of the garden?,(2 * (14.0 + 7.0)),42,Addition
+chal-78,John has 40 apples. He gives away 20% of them to his friends., How many apples does he have left?,(0.80 * 40.0),32,Multiplication
+chal-79,A rectangular table has dimensions 5 feet by 3 feet., What is the area of the table?,(5.0 * 3.0),15,Multiplication
+chal-80,The company produced 300 widgets. If 10% of them are defective, how many widgets are not defective?,(0.90 * 300.0),270,Multiplication
+chal-81,A square garden has a side length of 10 meters. ,What is the area of the garden?,(10.0 * 10.0),100,Multiplication
+chal-82,There are 80 students in a music club. If 30% of them play the piano, how many students do not play the piano?,(0.70 * 80.0),56,Multiplication
+chal-83,A store offers a 25% discount on a $120 item. ,How much money will the customer save?,(0.25 * 120.0),30,Multiplication
+chal-84,A circular swimming pool has a radius of 8 meters. ,What is the circumference of the pool?,(2 * 3.14 * 8.0),50.24,Multiplication
+chal-85,There are 60 books on a shelf. If 20% of them are science fiction, how many books are science fiction?,(0.20 * 60.0),12,Multiplication
+chal-86,Emily bought a shirt for $30 and a pair of shoes for $50. ,How much did Emily spend in total?,(30.0 + 50.0),80,Addition
+chal-87,A rectangular box has a length of 15 inches a width of 8 inches and a height of 6 inches., What is the volume of the box?,(15.0 * 8.0 * 6.0),720,Multiplication
+chal-88,The company earned $500000 in revenue. After deducting expenses, the profit is 20%. What is the profit?,(0.20 * 500000.0),100000,Multiplication
+chal-89,In a marathon a runner covers 26.2 miles., If they run at a pace of 8 minutes per mile how long does it take to finish the marathon?,(26.2 * 8.0),209.6,Multiplication
+chal-78,John has 40 apples. He gives away 20% of them to his friends., How many apples does he have left?,(0.80 * 40.0),32,Multiplication
+chal-79,A rectangular table has dimensions 5 feet by 3 feet., What is the area of the table?,(5.0 * 3.0),15,Multiplication
+chal-80,The company produced 300 widgets. ,If 10% of them are defective how many widgets are not defective?,(0.90 * 300.0),270,Multiplication
+chal-81,A square garden has a side length of 10 meters., What is the area of the garden?,(10.0 * 10.0),100,Multiplication
+chal-82,There are 80 students in a music club. If 30% of them play the piano, how many students do not play the piano?,(0.70 * 80.0),56,Multiplication
+chal-83,A store offers a 25% discount on a $120 item. ,How much money will the customer save?,(0.25 * 120.0),30,Multiplication
+chal-84,A circular swimming pool has a radius of 8 meters., What is the circumference of the pool?,(2 * 3.14 * 8.0),50.24,Multiplication
+chal-85,There are 60 books on a shelf. If 20% of them are science fiction, how many books are science fiction?,(0.20 * 60.0),12,Multiplication
+chal-86,Emily bought a shirt for $30 and a pair of shoes for $50. ,How much did Emily spend in total?,(30.0 + 50.0),80,Addition
+chal-90,Sarah has 15 apples. She buys 10 more at the store. ,How many apples does she have in total?,(15.0 + 10.0),25,Addition
+chal-91,A rectangular field has a length of 30 meters and an additional 20 meters added to it. ,What is the total length of the field?,(30.0 + 20.0),50,Addition
+chal-92,The school has 120 students in the morning session and 80 students in the afternoon session., How many students are there in total?,(120.0 + 80.0),200,Addition
+chal-93,There are 25 red balloons and 15 blue balloons., How many balloons are there in total?,(25.0 + 15.0),40,Addition
+chal-94,The company sold 500 products in the first quarter and an additional 300 products in the second quarter., How many products were sold in total?,(500.0 + 300.0),800,Addition
+chal-95,A rectangular room has a width of 12 feet. ,If 8 feet are added to the width what is the new width of the room?,(12.0 + 8.0),20,Addition
+chal-96,There are 60 students in a school club. ,If 40 more students join how many students are in the club?,(60.0 + 40.0),100,Addition
+chal-97,David has $50. He receives $30 as a gift. ,How much money does David have now?,(50.0 + 30.0),80,Addition
+chal-98,A square garden has a side length of 10 meters. If an additional 5 meters are added to each side, what is the new area of the garden?,((10.0 + 5.0) * (10.0 + 5.0)),225,Addition
+chal-99,A runner covers 10 miles. , If they run an additional 5 miles how many miles have they covered?,(10.0 + 5.0),15,Addition
+chal-100,There are 120 students in a school assembly. ,If 80 more students join how many students are present?,(120.0 + 80.0),200,Addition
+chal-101,A rectangular table has a length of 6 feet., If an additional 4 feet are added to the length what is the new length of the table?,(6.0 + 4.0),10,Addition
+
