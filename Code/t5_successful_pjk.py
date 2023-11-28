@@ -136,11 +136,11 @@ for i in range(5):
     true_answer = val_dataset.answers[i]
 
     #reshape input_ids to add batch and sequence length dimensions
-    input_ids = input_ids.unsqueeze(0).to(device)  # Add batch dimension and move to device
+    input_ids = input_ids.unsqueeze(0).to(device)
 
     #generate prediction
     outputs = model.generate(input_ids)
-    prediction = tokenizer.decode(outputs[0], skip_special_tokens=True)  # Decode the output without special tokens
+    prediction = tokenizer.decode(outputs[0], skip_special_tokens=True)
 
     print(f"Validation Question: {val_question}")
     print(f"Predicted Text: {prediction}")
