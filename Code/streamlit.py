@@ -7,6 +7,8 @@ st.header("Taking written math problems and using machine translation to compute
 st.subheader("Paul Kelly, Carrie Magee, Jack McMorrow, Akshay Verma")
 st.divider()
 
+# ----------- Model Evaluation ------------
+
 # ----------- Model Demo -------------------
 
 st.write("Model Demo: Input a math problem here")
@@ -23,3 +25,4 @@ model_output = "*Need to load model*"
     
 output = st.write(model_output)
 st.write("Output of the trained model:", output)
+
