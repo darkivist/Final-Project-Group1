@@ -21,10 +21,13 @@ st.subheader("Paul Kelly, Carrie Magee, Jack McMorrow, Akshay Verma")
 st.divider()
 
 # ----------- Model Evaluation ------------
-
+# Insert visualizaiton and metrics from model to display in streamlit
+#
+# 
+st.divider()
 # ----------- Model Demo -------------------
-
-st.write("Model Demo: Input a math problem here")
+st.header("Model Demo")
+st.write("Input a math problem here")
 
 text = st.text_input("Type in a math problem", value=None, placeholder="Type here...")
 st.write()
