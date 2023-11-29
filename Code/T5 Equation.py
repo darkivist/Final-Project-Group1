@@ -5,6 +5,7 @@ from nltk.translate.bleu_score import corpus_bleu
 from transformers import T5Tokenizer, T5ForConditionalGeneration, Seq2SeqTrainer, Seq2SeqTrainingArguments
 from transformers.trainer_callback import EarlyStoppingCallback
 import json
+import optuna
 
 import torch
 from torch.utils.data import Dataset
@@ -112,34 +113,81 @@ device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 # use the dataLoader for training
 model.to(device)
 
-# define training arguments
-training_args = Seq2SeqTrainingArguments(
-  output_dir='./results',
-  per_device_train_batch_size=16,
-  per_device_eval_batch_size=16,
-  logging_dir='./logs',
-  logging_steps=100,
-  save_steps=1000,
-  evaluation_strategy='epoch',
-  eval_steps=500,
-  num_train_epochs=20,
-  predict_with_generate=True,
+# Create Optune Study
+def objective(trial):
+  # Set up hyperparameters to be tuned
+  learning_rate = trial.suggest_loguniform("learning_rate", 1e-6, 1e-4)
+  batch_size = trial.suggest_categorical("batch_size", [8, 16, 32])
+  num_train_epochs = trial.suggest_int("num_train_epochs", 5, 30)
+
+  # Define training arguments with tuned hyperparameters
+  training_args = Seq2SeqTrainingArguments(
+    output_dir='./results',
+    per_device_train_batch_size=batch_size,
+    per_device_eval_batch_size=batch_size,
+    logging_dir='./logs',
+    logging_steps=100,
+    save_steps=1000,
+    evaluation_strategy='epoch',
+    eval_steps=500,
+    num_train_epochs=num_train_epochs,
+    predict_with_generate=True,
+  )
+
+  # Define optimizer with tuned learning rate
+  optimizer = torch.optim.Adam(model.parameters(), lr=learning_rate)
+
+  # Instantiate Seq2SeqTrainer with tuned hyperparameters
+  trainer = Seq2SeqTrainer(
+    model=model,
+    args=training_args,
+    train_dataset=train_dataset,
+    eval_dataset=val_dataset,
+    tokenizer=tokenizer,
+    optimizers=(optimizer, None),
+  )
+
+  # Train the model
+  trainer.train()
+
+  # Evaluate the model
+  val_metrics = trainer.evaluate()
+
+  # Return the metric you want to optimize (e.g., BLEU score)
+  return val_metrics["eval_bleu"]
+
+study = optuna.create_study(direction="maximize")
+study.optimize(objective, n_trials=10)  # You can adjust the number of trials
+
+# get the best hyperparameters from the study
+best_params = study.best_params
+print("Best Hyperparameters:", best_params)
+
+final_training_args = Seq2SeqTrainingArguments(
+    output_dir='./results',
+    per_device_train_batch_size=best_params["batch_size"],
+    per_device_eval_batch_size=best_params["batch_size"],
+    logging_dir='./logs',
+    logging_steps=100,
+    save_steps=1000,
+    evaluation_strategy='epoch',
+    eval_steps=500,
+    num_train_epochs=best_params["num_train_epochs"],
+    predict_with_generate=True,
 )
 
-# define optimizer and instantiate Seq2SeqTrainer
-optimizer = torch.optim.Adam(model.parameters(), lr=1e-5)
-trainer = Seq2SeqTrainer(
-  model=model,
-  args=training_args,
-  train_dataset=train_dataset,
-  eval_dataset=val_dataset,
-  tokenizer=tokenizer,
-  optimizers=(optimizer, None),
+final_optimizer = torch.optim.Adam(model.parameters(), lr=best_params["learning_rate"])
+final_trainer = Seq2SeqTrainer(
+    model=model,
+    args=final_training_args,
+    train_dataset=train_dataset,
+    eval_dataset=val_dataset,
+    tokenizer=tokenizer,
+    optimizers=(final_optimizer, None),
 )
 
-# train model
-trainer.train()
-
+# train model with best hyperparameters
+final_trainer.train()
 
 # Save the trained model
 output_dir = "./saved_model_T5_Equation"
@@ -148,11 +196,12 @@ tokenizer.save_pretrained(output_dir)
 
 # Save additional configuration information
 config = {
-    "max_length": 128,  # You may adjust this based on your needs
-    "per_device_train_batch_size": 16,
-    "per_device_eval_batch_size": 16,
+    "max_length": 128,
+    "per_device_train_batch_size": best_params["batch_size"],
+    "per_device_eval_batch_size": best_params["batch_size"],
     # Add any other configuration parameters you want to save
 }
+
 
 with open(os.path.join(output_dir, "config.json"), "w") as config_file:
     json.dump(config, config_file)
@@ -160,7 +209,7 @@ with open(os.path.join(output_dir, "config.json"), "w") as config_file:
 
 
 # display training metrics
-train_metrics = trainer.evaluate()
+train_metrics = final_trainer.evaluate()
 print(f"Training metrics: {train_metrics}")
 
 # show first five records/predictions from val dataset
