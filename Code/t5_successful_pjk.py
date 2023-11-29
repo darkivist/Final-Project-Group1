@@ -7,6 +7,7 @@ from torch.utils.data import Dataset
 import pandas as pd
 import re
 from sklearn.model_selection import train_test_split
+#from dataloader import load_data, create_dataloader
 
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 
@@ -91,6 +92,7 @@ model = T5ForConditionalGeneration.from_pretrained("t5-small")
 #create custom train/val datasets
 train_dataset = CustomDataset(train_questions, train_equations, train_answers, tokenizer)
 val_dataset = CustomDataset(val_questions, val_equations, val_answers, tokenizer)
+#in the training file we would swap CustomDataset for create_dataloader
 
 #use the dataLoader for training
 model.to(device)
