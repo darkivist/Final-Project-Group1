@@ -1,5 +1,6 @@
 import torch
 from transformers import T5Tokenizer, T5ForConditionalGeneration
+import pickle
 
 def preprocess_input(input_text, tokenizer, max_length=128):
     input_ids = tokenizer.encode_plus(
@@ -26,6 +27,7 @@ def generate_prediction(model, input_ids, tokenizer, max_length=128):
     return prediction
 
 # Load pretrained model and tokenizer
+
 output_dir = "./saved_model_T5_Equation"
 tokenizer = T5Tokenizer.from_pretrained(output_dir)
 model = T5ForConditionalGeneration.from_pretrained(output_dir)
@@ -42,3 +44,5 @@ prediction = generate_prediction(model, input_ids, tokenizer)
 # Display the result
 print("Input Text:", input_text)
 print("Predicted Equation:", prediction)
+
+

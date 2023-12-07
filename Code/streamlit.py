@@ -5,7 +5,9 @@ import torch
 
 # ------------Loading Model -------------------
 output_dir = "averma1010/T5_Math_Equation"
-tokenizer = T5Tokenizer.from_pretrained(output_dir)
+tokenizer_dir = "averma1010/T5_Math_Equation"
+
+tokenizer = T5Tokenizer.from_pretrained(tokenizer_dir)
 
 def load_model():
     model = T5ForConditionalGeneration.from_pretrained(output_dir)
