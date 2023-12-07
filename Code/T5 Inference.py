@@ -1,7 +1,6 @@
 import torch
 from transformers import T5Tokenizer, T5ForConditionalGeneration
 
-
 def preprocess_input(input_text, tokenizer, max_length=128):
     input_ids = tokenizer.encode_plus(
         "translate Question to Equation: " + input_text,
@@ -32,7 +31,7 @@ tokenizer = T5Tokenizer.from_pretrained(output_dir)
 model = T5ForConditionalGeneration.from_pretrained(output_dir)
 
 # Example input for inference
-input_text = "Alice has 8 boxes of chocolates, and each box contains 12 chocolates. How many chocolates does she have in total?"
+input_text = "Samantha has 10 apples, she loses 5. How many does she have now?"
 
 # Preprocess input
 input_ids = preprocess_input(input_text, tokenizer)
