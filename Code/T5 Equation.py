@@ -99,8 +99,8 @@ val_equations = val_data['Equation'].tolist()
 val_answers = val_data['Equation'].tolist()
 
 # initialize tokenizer and model
-tokenizer = T5Tokenizer.from_pretrained("t5-small")
-model = T5ForConditionalGeneration.from_pretrained("t5-small")
+tokenizer = T5Tokenizer.from_pretrained("google/flan-t5-base")
+model = T5ForConditionalGeneration.from_pretrained("google/flan-t5-base")
 
 # create custom train/val datasets
 train_dataset = CustomDataset(train_questions, train_equations, train_answers, tokenizer)
@@ -114,7 +114,7 @@ model.to(device)
 
 # define training arguments
 training_args = Seq2SeqTrainingArguments(
-  output_dir='./results',
+  output_dir='./flan-t5-results',
   per_device_train_batch_size=16,
   per_device_eval_batch_size=16,
   logging_dir='./logs',
@@ -125,6 +125,8 @@ training_args = Seq2SeqTrainingArguments(
   num_train_epochs=20,
   predict_with_generate=True,
 )
+
+
 
 # define optimizer and instantiate Seq2SeqTrainer
 optimizer = torch.optim.Adam(model.parameters(), lr=1e-5)
@@ -138,11 +140,11 @@ trainer = Seq2SeqTrainer(
 )
 
 # train model
-trainer.train()
+trainer.train(resume_from_checkpoint=True)
 
 
 # Save the trained model
-output_dir = "./saved_model_T5_Equation"
+output_dir = "./saved_model_flan-t5-base_Equation"
 model.save_pretrained(output_dir)
 tokenizer.save_pretrained(output_dir)
 

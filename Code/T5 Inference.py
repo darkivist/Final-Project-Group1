@@ -28,12 +28,12 @@ def generate_prediction(model, input_ids, tokenizer, max_length=128):
 
 # Load pretrained model and tokenizer
 
-output_dir = "./saved_model_T5_Equation"
+output_dir = "/home/ubuntu/Code/flan-t5-results/checkpoint-38000/"
 tokenizer = T5Tokenizer.from_pretrained(output_dir)
 model = T5ForConditionalGeneration.from_pretrained(output_dir)
 
 # Example input for inference
-input_text = "Samantha has 10 apples, she loses 5. How many does she have now?"
+input_text = "The perimeter of a rectangular garden is 28 meters, and its length is 8 meters. What is the width of the garden?"
 
 # Preprocess input
 input_ids = preprocess_input(input_text, tokenizer)
