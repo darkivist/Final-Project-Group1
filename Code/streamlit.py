@@ -1,4 +1,5 @@
 import streamlit as st
+
 import numpy as np
 from transformers import T5Tokenizer, T5ForConditionalGeneration
 import torch
@@ -17,6 +18,7 @@ def load_model():
 
 model = load_model()
 
+
 # ---------- Titles and headers -----------
 tab1, tab2, tab3 = st.tabs(["Introduction & Dataset", "Limitation", "Model Demo"])
 
@@ -31,7 +33,10 @@ with tab1:
 
 
 
+
 # ----------- Model Evaluation ------------
+
+
 
 
 # ----------- Model Demo -------------------
@@ -51,6 +56,7 @@ with tab3:
 
 
 # Add animation for when model is predicting
+
 
 # Code to predict the model
 
