@@ -6,6 +6,7 @@ from transformers import T5Tokenizer, T5ForConditionalGeneration
 import torch
 st.set_page_config(layout="wide")
 from PIL import Image
+import pandas as pd
 
 
 # ------------Loading Model -------------------
@@ -40,9 +41,35 @@ with tab1:
     
     st.header("Taking written math problems and using machine translation to compute the answer")
     st.subheader("Paul Kelly, Carrie Magee, Jack McMorrow, Akshay Verma")
+    
     st.divider()
 
+    st.text("""The goal of this project is to utlized a transformer to be able to solve word problem statements that
+            are commonly used in classrooms. ......""")
+    
+    st.divider()
+    
+    st.subheader("Dataset")
+    
+    st.image("example-image.png")
+    st.text(""" ***Description of dataset*** """)
+    
+    example_df = pd.DataFrame({
+        
+    })
 
+# ----------- NLP Models -----------------------
+
+with tab2:
+    st.header("NLP Model Architecture")
+    
+    
+
+# ---------- Experimental Design and Hyperparameters ----------
+with tab3:
+    st.header("Experimental Design")
+    
+    
 
 
 
