@@ -1,6 +1,6 @@
-
 import pickle
-
+import torch
+torch.cuda.empty_cache()
 from nltk.translate.bleu_score import corpus_bleu
 from transformers import T5Tokenizer, T5ForConditionalGeneration, Seq2SeqTrainer, Seq2SeqTrainingArguments
 from transformers.trainer_callback import EarlyStoppingCallback
