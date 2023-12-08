@@ -40,9 +40,16 @@ with tab1:
 
 
 
-# ----------- Model Evaluation ------------
+# ----------- Results and Limitation ------------
 
+with tab4:
+    col1, col2 =  st.columns(2)
 
+    with col1:
+        st.header("Results")
+
+    with col2:
+        st.header("Limitaion")
 
 
 # ----------- Model Demo -------------------
