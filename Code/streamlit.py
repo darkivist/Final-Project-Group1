@@ -35,8 +35,8 @@ with tab1:
     st.markdown("""___""")
     
     # Uploading stock image
-    image = Image.open("stock-image.jpeg")
-    st.image(image)
+    #image = Image.open("stock-image.jpeg")
+    #st.image(image)
     st.divider() 
     
     st.header("Taking written math problems and using machine translation to compute the answer")
@@ -51,7 +51,7 @@ with tab1:
     
     st.subheader("Dataset")
     
-    st.image("example-image.png")
+    #st.image("example-image.png")
     st.text(""" ***Description of dataset*** """)
     
 
@@ -82,6 +82,7 @@ with tab4:
 
     with col1:
         st.header("Results")
+        st.image("https://raw.githubusercontent.com/darkivist/Final-Project-Group1/87755f1ff1f9da1922d14ffd03f7fb5e6ee8ce7e/Code/Images/bar-graph.png")
         st.image("https://raw.githubusercontent.com/darkivist/Final-Project-Group1/8926883058a453f8b355205755cd1632006bca49/Code/Images/Rouge%20Score.png")
 
     with col2:
