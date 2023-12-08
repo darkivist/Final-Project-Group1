@@ -1,3 +1,4 @@
+# Imports
 import streamlit as st
 
 import numpy as np
@@ -20,6 +21,7 @@ model = load_model()
 
 
 # ---------- Titles and headers -----------
+
 tab1, tab2, tab3 = st.tabs(["Introduction & Dataset", "Limitation", "Model Demo"])
 
 with tab1:
@@ -34,6 +36,7 @@ with tab1:
 
 
 
+
 # ----------- Model Evaluation ------------
 
 
@@ -41,7 +44,10 @@ with tab1:
 
 # ----------- Model Demo -------------------
 
+
 with tab3:
+
+
 
     text = st.text_input("Type in a math problem", value=None, placeholder="Type here...")
 
@@ -54,11 +60,7 @@ with tab3:
         st.write("Generated Answer:", decoded_output)
 
 
-
 # Add animation for when model is predicting
-
-
-# Code to predict the model
 
 
 
