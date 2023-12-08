@@ -47,8 +47,7 @@ with tab4:
 
     with col1:
         st.header("Results")
-        st.image(r"C:\Users\Akshay\OneDrive\Desktop\RA\Final-Project-Group1\Code\Rouge Score.png")
-
+        st.image("https://raw.githubusercontent.com/darkivist/Final-Project-Group1/8926883058a453f8b355205755cd1632006bca49/Code/Images/Rouge%20Score.png")
 
     with col2:
         st.header("Limitation")
