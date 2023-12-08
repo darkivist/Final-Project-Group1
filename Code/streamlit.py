@@ -62,7 +62,13 @@ with tab2:
     
     st.subheader("Original Attempts")
     
+    st.text("GPT Model:")
+    
+    st.text("BERT Model:")
+    
     st.subheader("T5 Model")
+    
+    st.text("Write description here:")
     
     
 
@@ -70,7 +76,9 @@ with tab2:
 with tab3:
     st.header("Experimental Design")
     
+    st.text("Metrics and evaluations:")
     
+    st.header("Hyperparameters")
 
 
 
