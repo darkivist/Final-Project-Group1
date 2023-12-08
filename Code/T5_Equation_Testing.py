@@ -2,6 +2,7 @@ import torch
 from transformers import T5Tokenizer, T5ForConditionalGeneration
 import pandas as pd
 from nltk.translate.bleu_score import corpus_bleu, SmoothingFunction
+from rouge import Rouge
 
 def preprocess_input(input_text, tokenizer, max_length=128):
     input_ids = tokenizer.encode_plus(
@@ -81,3 +82,10 @@ bleu_score = corpus_bleu([labels_tokens_flat], [predictions_tokens_flat], smooth
 
 
 print("BLEU Score:", bleu_score)
+
+#Calculate ROUGE score
+rouge = Rouge()
+
+rouge_scores = rouge.get_scores(predictions_list, labels_list, avg=True)
+
+print("ROUGE Scores:", rouge_scores)
