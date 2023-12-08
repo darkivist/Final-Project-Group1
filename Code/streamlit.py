@@ -45,7 +45,7 @@ with tab1:
     st.divider()
 
     st.text("""The goal of this project is to utlized a transformer to be able to solve word problem statements that
-            are commonly used in classrooms. ......""")
+            are commonly used in classrooms. """)
     
     st.divider()
     
@@ -54,14 +54,15 @@ with tab1:
     st.image("example-image.png")
     st.text(""" ***Description of dataset*** """)
     
-    example_df = pd.DataFrame({
-        
-    })
 
 # ----------- NLP Models -----------------------
 
 with tab2:
     st.header("NLP Model Architecture")
+    
+    st.subheader("Original Attempts")
+    
+    st.subheader("T5 Model")
     
     
 
