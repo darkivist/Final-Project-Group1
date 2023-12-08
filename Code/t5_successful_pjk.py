@@ -92,6 +92,7 @@ model = T5ForConditionalGeneration.from_pretrained("t5-small")
 #create custom train/val datasets
 train_dataset = CustomDataset(train_questions, train_equations, train_answers, tokenizer)
 val_dataset = CustomDataset(val_questions, val_equations, val_answers, tokenizer)
+#in the training file we would swap CustomDataset for create_dataloader
 
 #use the dataLoader for training
 model.to(device)
