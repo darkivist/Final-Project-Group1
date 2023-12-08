@@ -1,4 +1,5 @@
 import streamlit as st
+
 import numpy as np
 from transformers import T5Tokenizer, T5ForConditionalGeneration
 import torch
@@ -15,6 +16,7 @@ def load_model():
 
 model = load_model()
 
+
 # ---------- Titles and headers -----------
 st.title("NLP Group 1: Translating Math Problems")
 st.markdown("""___""")
@@ -25,7 +27,10 @@ st.divider()
 
 
 
+
 # ----------- Model Evaluation ------------
+
+
 
 
 # ----------- Model Demo -------------------
@@ -33,6 +38,7 @@ st.divider()
 st.write("Model Demo: Input a math problem here")
 
 text = st.text_input("Type in a math problem", value=None, placeholder="Type here...")
+
 
 if st.button("Generate Answer"):
     # Tokenize and generate answer
@@ -45,6 +51,7 @@ st.write()
 st.write("Inputed math problem:", text)
 
 # Add animation for when model is predicting
+
 
 # Code to predict the model
 
