@@ -7,7 +7,7 @@ from torch.utils.data import Dataset
 import pandas as pd
 import re
 from sklearn.model_selection import train_test_split
-#from dataloader import load_data, create_dataloader
+from torch.utils.tensorboard import SummaryWriter
 
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 
@@ -110,6 +110,9 @@ training_args = Seq2SeqTrainingArguments(
     num_train_epochs=200,
     predict_with_generate=True
 )
+
+writer = SummaryWriter(log_dir=training_args.logging_dir)
+
 #define optimizer and instantiate Seq2SeqTrainer
 optimizer = torch.optim.Adam(model.parameters(), lr=1e-5)
 trainer = Seq2SeqTrainer(
@@ -121,8 +124,28 @@ trainer = Seq2SeqTrainer(
     optimizers=(optimizer, None)
 )
 
-#train model
-trainer.train()
+#training Loop
+for epoch in range(training_args.num_train_epochs):
+    #training
+    trainer.train()
+
+    #save model checkpoint
+    if epoch % training_args.save_steps == 0:
+        model_checkpoint_path = f'./results/checkpoint-{epoch}'
+        trainer.save_model(model_checkpoint_path)
+
+    #histograms, model weights
+    for name, param in model.named_parameters():
+        writer.add_histogram(name, param, epoch)
+
+#close tensorBoard writer
+writer.close()
+
+#to launch tensorboard from AWS, enter following in local terminal (update with your own details):
+# "ssh -x -i name_of_your_aws_key.pem -L 6006:localhost:6006 ubuntu@ip_address_of_your_instance"
+#then in remote terminal enter:
+# "tensorboard --logdir ./logs"
+#then open "http://localhost:6006/" in local web browser
 
 #display training metrics
 train_metrics = trainer.evaluate()
@@ -147,7 +170,6 @@ for i in range(5):
     print(f"Validation Question: {val_question}")
     print(f"Predicted Text: {prediction}")
     print(f"True Answer: {true_answer}")
-
 
 #function to tokenize sample problem for testing
 def preprocess_word_problem(problem_text):

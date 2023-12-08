@@ -1,17 +1,22 @@
 # Imports
 import streamlit as st
-import time
 
-# ---------- Define Functions -------------
-def simulate_loading_process():
-    time.sleep(3)
-    
-def progress_bar_test(text):
-    for i in range(1, 101):
-        time.sleep(0.1)
-        progress_bar.progress(i)
-    
-    return f"Inputed Text: {text}"
+import numpy as np
+from transformers import T5Tokenizer, T5ForConditionalGeneration
+import torch
+
+# ------------Loading Model -------------------
+output_dir = "averma1010/T5_Math_Equation"
+tokenizer_dir = "averma1010/T5_Math_Equation"
+
+tokenizer = T5Tokenizer.from_pretrained(tokenizer_dir)
+
+def load_model():
+    model = T5ForConditionalGeneration.from_pretrained(output_dir)
+    return model
+
+model = load_model()
+
 
 # ---------- Titles and headers -----------
 st.title("NLP Group 1: Translating Math Problems")
@@ -20,28 +25,33 @@ st.header("Taking written math problems and using machine translation to compute
 st.subheader("Paul Kelly, Carrie Magee, Jack McMorrow, Akshay Verma")
 st.divider()
 
+
+
+
+
 # ----------- Model Evaluation ------------
-# Insert visualizaiton and metrics from model to display in streamlit
-#
-# 
-st.divider()
+
+
+
+
 # ----------- Model Demo -------------------
 st.header("Model Demo")
 st.write("Input a math problem here")
 
 text = st.text_input("Type in a math problem", value=None, placeholder="Type here...")
+
+
+if st.button("Generate Answer"):
+    # Tokenize and generate answer
+    inputs = tokenizer(text, return_tensors="pt", max_length=512, truncation=True)
+    output = model.generate(**inputs)
+    decoded_output = tokenizer.decode(output[0], skip_special_tokens=True)
+    st.write("Generated Answer:", decoded_output)
+
 st.write()
 
 # Add animation for when model is predicting
-if text:
-    progress_bar = st.progress(0)
-    
-    prediction = progress_bar_test(text)
-    
-    progress_bar.empty()
-    st.success(prediction)
-    
-# Consider adding progess bar
+
 
 # Code to predict the model
 
