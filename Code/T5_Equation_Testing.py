@@ -84,8 +84,11 @@ bleu_score = corpus_bleu([labels_tokens_flat], [predictions_tokens_flat], smooth
 print("BLEU Score:", bleu_score)
 
 
+#Calculate ROUGE score
+
 rouge = Rouge()
 
 rouge_scores = rouge.get_scores(predictions_list, labels_list, avg=True)
+
 
 print("ROUGE Scores:", rouge_scores)

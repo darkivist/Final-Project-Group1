@@ -1,3 +1,4 @@
+# Imports
 import streamlit as st
 
 import numpy as np
@@ -34,6 +35,7 @@ with tab1:
 
 
 
+
 # ----------- Model Evaluation ------------
 
 
@@ -42,6 +44,8 @@ with tab1:
 # ----------- Model Demo -------------------
 
 with tab5:
+
+
 
     text = st.text_input("Type in a math problem", value=None, placeholder="Type here...")
 
@@ -54,11 +58,7 @@ with tab5:
         st.write("Generated Answer:", decoded_output)
 
 
-
 # Add animation for when model is predicting
-
-
-# Code to predict the model
 
 
 
