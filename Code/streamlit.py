@@ -21,7 +21,7 @@ model = load_model()
 
 
 # ---------- Titles and headers -----------
-tab1, tab2, tab3, tab4, tab5 = st.tabs(["Introduction & Dataset",  "Limitation", "Model Demo"])
+tab1, tab2, tab3, tab4, tab5 = st.tabs(["Introduction & Dataset", "NLP Model", "Experimental Design and Hyperparameters"  , "Results & Limitaion", "Model Demo"])
 
 with tab1:
 
