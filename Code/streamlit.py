@@ -21,9 +21,11 @@ model = load_model()
 
 
 # ---------- Titles and headers -----------
+st.title("NLP Group 1: Translating Math Problems")
+
+
 tab1, tab2, tab3, tab4, tab5 = st.tabs(["Introduction & Dataset", "NLP Model", "Experimental Design and Hyperparameters"  , "Results & Limitaion", "Model Demo"])
 
-st.title("NLP Group 1: Translating Math Problems")
 
 
 with tab1:
