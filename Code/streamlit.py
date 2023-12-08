@@ -5,6 +5,7 @@ import numpy as np
 from transformers import T5Tokenizer, T5ForConditionalGeneration
 import torch
 st.set_page_config(layout="wide")
+from PIL import Image
 
 
 # ------------Loading Model -------------------
@@ -31,6 +32,12 @@ tab1, tab2, tab3, tab4, tab5 = st.tabs(["Introduction & Dataset", "NLP Model", "
 with tab1:
 
     st.markdown("""___""")
+    
+    # Uploading stock image
+    image = Image.open("stock-image.jpeg")
+    st.image(image)
+    st.divider() 
+    
     st.header("Taking written math problems and using machine translation to compute the answer")
     st.subheader("Paul Kelly, Carrie Magee, Jack McMorrow, Akshay Verma")
     st.divider()
