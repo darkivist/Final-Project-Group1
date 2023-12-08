@@ -23,9 +23,11 @@ model = load_model()
 # ---------- Titles and headers -----------
 tab1, tab2, tab3, tab4, tab5 = st.tabs(["Introduction & Dataset", "NLP Model", "Experimental Design and Hyperparameters"  , "Results & Limitaion", "Model Demo"])
 
+st.title("NLP Group 1: Translating Math Problems")
+
+
 with tab1:
 
-    st.title("NLP Group 1: Translating Math Problems")
     st.markdown("""___""")
     st.header("Taking written math problems and using machine translation to compute the answer")
     st.subheader("Paul Kelly, Carrie Magee, Jack McMorrow, Akshay Verma")
