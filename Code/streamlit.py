@@ -20,7 +20,7 @@ model = load_model()
 
 
 # ---------- Titles and headers -----------
-tab1, tab2, tab3 = st.tabs(["Introduction & Dataset", "Limitation", "Model Demo"])
+tab1, tab2, tab3, tab4, tab5 = st.tabs(["Introduction & Dataset",  "Limitation", "Model Demo"])
 
 with tab1:
 
@@ -41,7 +41,7 @@ with tab1:
 
 # ----------- Model Demo -------------------
 
-with tab3:
+with tab5:
 
     text = st.text_input("Type in a math problem", value=None, placeholder="Type here...")
 
