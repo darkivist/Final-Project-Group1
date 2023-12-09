@@ -122,7 +122,7 @@ training_args = Seq2SeqTrainingArguments(
   save_steps=1000,
   evaluation_strategy='epoch',
   eval_steps=500,
-  num_train_epochs=20,
+  num_train_epochs=50,
   predict_with_generate=True,
 )
 
