@@ -24,6 +24,7 @@ model = load_model()
 
 # ---------- Titles and headers -----------
 st.title("NLP Group 1: Translating Math Problems")
+st.subheader("Paul Kelly, Carrie Magee, Jack McMorrow, Akshay Verma")
 
 
 tab1, tab2, tab3, tab4, tab5 = st.tabs(["Introduction & Dataset", "NLP Model", "Experimental Design and Hyperparameters"  , "Results & Limitaion", "Model Demo"])
@@ -31,28 +32,34 @@ tab1, tab2, tab3, tab4, tab5 = st.tabs(["Introduction & Dataset", "NLP Model", "
 
 
 with tab1:
-
     st.markdown("""___""")
     
     # Uploading stock image
-    #image = Image.open("stock-image.jpeg")
-    #st.image(image)
-    st.divider() 
-    
-    st.header("Taking written math problems and using machine translation to compute the answer")
-    st.subheader("Paul Kelly, Carrie Magee, Jack McMorrow, Akshay Verma")
+    image = Image.open("stock-image.jpeg")
+    st.image(image)
+
     
     st.divider()
+    
+    st.markdown("Ambiguity, context-dependent information, and inferential reasoning in math word problems poses a unique challenge to transformers and other NLP models")
 
-    st.text("""The goal of this project is to utlized a transformer to be able to solve word problem statements that
-            are commonly used in classrooms. """)
+    st.subheader("Goals of the project:")
+    
+    st.markdown("Goal of project is to translate math word problems (MWP) into numeric equations using transformers ")
     
     st.divider()
     
     st.subheader("Dataset")
+
+    st.markdown("MAWPS (Math Word Problem Repository) used for training")
+    st.markdown("SVAMP (Simple Variation on Arithmetic Math Word Problems) used for testing")
+    
+    st.markdown("MAWPS:")
+    st.markdown("- MAWPS was developed by researchers at Google and Microsoft to be used to test various NLP models curated to solve math word problems.")
+    st.markdown("- Inconsistencies in the performance of models on this dataset because when the question component of the problem was removed unring test the model still preformed well.\n ")
+    st.markdown("\t- Suggests potential reliance on cues unrelated to the actual mathematical concepts ")
     
     #st.image("example-image.png")
-    st.text(""" ***Description of dataset*** """)
     
 
 # ----------- NLP Models -----------------------
