@@ -35,7 +35,7 @@ def generate_prediction(model, input_ids, tokenizer, max_length=128):
 
 
 # Load pretrained model and tokenizer
-output_dir = "/home/ubuntu/Code/flan-t5-results/checkpoint-38000/"
+output_dir = "/home/ubuntu/Code/results/checkpoint-38000/"
 tokenizer = T5Tokenizer.from_pretrained(output_dir)
 model = T5ForConditionalGeneration.from_pretrained(output_dir)
 
@@ -69,6 +69,7 @@ for index, row in test.iterrows():
     # Generate prediction
     prediction = prediction.replace('(', '').replace(')', '').replace('X', '').replace("=", '').replace('x','')
     actual_label = row['Equation'].replace('(', '').replace(')', '').replace('X=', '').replace("=", '').replace('x','')
+    #actual_label = row['Answer']
 
     try:
         # Use sympify to check if the cleaned prediction and actual label are equal
@@ -88,35 +89,13 @@ for index, row in test.iterrows():
     except Exception as e:
         # Handle the exception (you can print or log the error if needed)
         print(f"Error processing row {index}: {e}")
+        print(row['Type'])
 
 print(y)
 
 for prediction_type, count in correct_predictions_by_type.items():
     print(f"{prediction_type}: {count}")
-# Calculate BLEU score
-predictions_tokens = [prediction.split() for prediction in predictions_list]
-labels_tokens = [label.split() for label in labels_list]
 
-predictions_tokens_flat = [token for sublist in predictions_tokens for token in sublist]
-labels_tokens_flat = [token for sublist in labels_tokens for token in sublist]
-
-# Calculate BLEU score
-smoothie = SmoothingFunction().method1
-
-bleu_score = corpus_bleu([labels_tokens_flat], [predictions_tokens_flat], smoothing_function=smoothie)
-
-
-print("BLEU Score:", bleu_score)
-
-bleu_scores = [bleu_score]
-
-# Plotting the BLEU score
-plt.figure(figsize=(10, 6))
-plt.bar(['BLEU Score'], bleu_scores, color=['blue'])
-plt.title('BLEU Score')
-plt.ylabel('Score')
-plt.ylim(0, 1)  # Adjust the y-axis limit if needed
-plt.show()
 
 
 #Calculate ROUGE score
