@@ -35,8 +35,8 @@ with tab1:
     st.markdown("""___""")
     
     # Uploading stock image
-    image = Image.open("stock-image.jpeg")
-    st.image(image)
+    
+    st.image("https://raw.githubusercontent.com/darkivist/Final-Project-Group1/ab1a9fe0168aa35d5d37017c58f0317fac0322b9/Code/Images/stock-image.jpeg")
 
     
     st.divider()
@@ -59,7 +59,7 @@ with tab1:
     st.markdown("- Inconsistencies in the performance of models on this dataset because when the question component of the problem was removed unring test the model still preformed well.\n ")
     st.markdown("\t- Suggests potential reliance on cues unrelated to the actual mathematical concepts ")
     
-    #st.image("example-image.png")
+    st.image("https://raw.githubusercontent.com/darkivist/Final-Project-Group1/ab1a9fe0168aa35d5d37017c58f0317fac0322b9/Code/Images/example-image.png")
     
 
 # ----------- NLP Models -----------------------
