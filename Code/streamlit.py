@@ -65,9 +65,20 @@ with tab1:
         st.markdown("- MAWPS was developed by researchers at Google and Microsoft to be used to test various NLP models curated to solve math word problems.")
         st.markdown("- Inconsistencies in the performance of models on this dataset because when the question component of the problem was removed unring test the model still preformed well.\n ")
         st.markdown("\t- Suggests potential reliance on cues unrelated to the actual mathematical concepts ")
-    
+        
+        st.markdown("SVAMP:")
+        st.markdown("- Researchers developed SVAMP in response to the shortcomings of the MAWPS dataset.")
+        st.markdown("- This testing dataset used to assess models’ proficiency in various aspects of math word problem solving by including MWP that vary in question sensitivity, reasoning ability, and structural invariance ")
+        
         st.divider()
-
+        
+        st.markdown("Aspect of Language Structure to Consider:")
+        st.markdown("- Question Sensitivity: variations in SVAMP check if the model’s answer depends on the structure of the question.")
+        st.markdown("- Reasoning Ability: variations ensure the model has learned to correctly determine a change in reasoning arising from changes in the problem text.")
+        st.markdown("- Structural Invariance: ensures that the model remains invariant to superficial changes in the problem text (i.e., changes that do not alter the answer or reasoning)")
+        
+        st.divider()
+        
         st.subheader("Training and Testing Dataset")
 
         st.markdown("We trained our model on an augmented version of MAWPS with approximately 60,000 rows and used SVAMP with 1000 math word problems for testing. SVAMP includes scenarios focusing on subtraction, addition, division, and multiplication. The dataset provides information about the question, numbers, equations, and answers. The 'Numbers' column includes relevant numerical values for each problem, serving as inputs during data preprocessing. The 'Equation' column represents the target variable, aiding the evaluation of the model's ability to translate word problems accurately into a numeric format.")
