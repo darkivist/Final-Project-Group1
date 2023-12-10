@@ -79,9 +79,9 @@ with tab1:
         
         st.divider()
         
-        st.subheader("Training and Testing Dataset")
+    st.subheader("Training and Testing Dataset")
 
-        st.markdown("We trained our model on an augmented version of MAWPS with approximately 60,000 rows and used SVAMP with 1000 math word problems for testing. SVAMP includes scenarios focusing on subtraction, addition, division, and multiplication. The dataset provides information about the question, numbers, equations, and answers. The 'Numbers' column includes relevant numerical values for each problem, serving as inputs during data preprocessing. The 'Equation' column represents the target variable, aiding the evaluation of the model's ability to translate word problems accurately into a numeric format.")
+    st.markdown("We trained our model on an augmented version of MAWPS with approximately 60,000 rows and used SVAMP with 1000 math word problems for testing. SVAMP includes scenarios focusing on subtraction, addition, division, and multiplication. The dataset provides information about the question, numbers, equations, and answers. The 'Numbers' column includes relevant numerical values for each problem, serving as inputs during data preprocessing. The 'Equation' column represents the target variable, aiding the evaluation of the model's ability to translate word problems accurately into a numeric format.")
     
 
 # ----------- NLP Models -----------------------
