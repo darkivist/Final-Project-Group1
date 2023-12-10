@@ -2,12 +2,12 @@
 #use train.csv with 9000 records
 
 from transformers import T5Tokenizer, T5ForConditionalGeneration, Seq2SeqTrainer, Seq2SeqTrainingArguments
-import torch
 from torch.utils.data import Dataset
 import pandas as pd
-import re
 from sklearn.model_selection import train_test_split
 from torch.utils.tensorboard import SummaryWriter
+import re
+import torch
 
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 
@@ -92,17 +92,16 @@ model = T5ForConditionalGeneration.from_pretrained("t5-small")
 #create custom train/val datasets
 train_dataset = CustomDataset(train_questions, train_equations, train_answers, tokenizer)
 val_dataset = CustomDataset(val_questions, val_equations, val_answers, tokenizer)
-#in the training file we would swap CustomDataset for create_dataloader
 
 #use the dataLoader for training
 model.to(device)
 
 #define training arguments
 training_args = Seq2SeqTrainingArguments(
-    output_dir='./results',
+    output_dir='./results_t5_small',
     per_device_train_batch_size=16,
     per_device_eval_batch_size=16,
-    logging_dir='./logs',
+    logging_dir='./logs_t5_small',
     logging_steps=100,
     save_steps=1000,
     evaluation_strategy='epoch',
@@ -110,8 +109,6 @@ training_args = Seq2SeqTrainingArguments(
     num_train_epochs=200,
     predict_with_generate=True
 )
-
-writer = SummaryWriter(log_dir=training_args.logging_dir)
 
 #define optimizer and instantiate Seq2SeqTrainer
 optimizer = torch.optim.Adam(model.parameters(), lr=1e-5)
@@ -124,25 +121,31 @@ trainer = Seq2SeqTrainer(
     optimizers=(optimizer, None)
 )
 
-#training Loop
+#set up tensorboard writer
+writer = SummaryWriter(log_dir=training_args.logging_dir)
+
+#training loop
 for epoch in range(training_args.num_train_epochs):
-    #training
     trainer.train()
 
     #save model checkpoint
-    if epoch % training_args.save_steps == 0:
-        model_checkpoint_path = f'./results/checkpoint-{epoch}'
+    if (epoch + 1) % training_args.save_steps == 0:
+        model_checkpoint_path = f'./results/checkpoint-{epoch+1}'
         trainer.save_model(model_checkpoint_path)
 
-    #histograms, model weights
+    #log histograms of model weights
     for name, param in model.named_parameters():
-        writer.add_histogram(name, param, epoch)
+        writer.add_histogram(name, param, epoch + 1)
 
-#close tensorBoard writer
+    #check if the current epoch equals the maximum number of epochs to avoid infinite loop
+    if epoch + 1 == training_args.num_train_epochs:
+        break  #exit the training loop after completing the specified epochs
+
 writer.close()
 
 #to launch tensorboard from AWS, enter following in local terminal (update with your own details):
-# "ssh -x -i name_of_your_aws_key.pem -L 6006:localhost:6006 ubuntu@ip_address_of_your_instance"
+# "ssh -x -i name_of_your_aws_key.pem 6006:localhost:6006 ubuntu@ip_address_of_your_instance"
+
 #then in remote terminal enter:
 # "tensorboard --logdir ./logs"
 #then open "http://localhost:6006/" in local web browser
@@ -178,7 +181,7 @@ def preprocess_word_problem(problem_text):
     return tokenized_problem
 
 #sample word problem
-word_problem = "Paul has 3.0 books. He gives 1.0 book to Amelia. How many books does Paul have now?"
+word_problem = "Paul has 3.0 books. Amelia has 28.0 books. Paul gives 1.0 book to Amelia. How many books does Paul have now?"
 
 print("Word problem:", word_problem)
 
