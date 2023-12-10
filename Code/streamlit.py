@@ -132,9 +132,9 @@ with tab3:
     st.header("Hyperparameters")
 
     st.markdown("We employed Optuna for hyperparameter tuning, conducting multiple experiments to determine the optimal metrics for model evaluation. Initially, we explored minimizing loss and optimizing for exact matches and token-level accuracy between predicted and true answers in the validation set. However, tuning for token-level accuracy and exact answer match proved unsuccessful. The resulting model failed to produce correct validation predictions.")
+    st.image("https://raw.githubusercontent.com/darkivist/Final-Project-Group1/717cea5ad4e98ef21f4153691c6c3f1e34f6d950/Code/Images/eval_loss.svg")
 
     st.markdown("Subsequently, we focused on minimizing loss, and our tuner selected the following hyperparameter values: batch size - 64, epochs - 47, optimizer - Adam, and learning rate - 1e-4, resulting in a validation loss of 0.04. Unfortunately, the model produced with these parameters did not yield satisfactory results. After further experimentation, we settled on a batch size of 16, 200 epochs, optimizer Adam, and a learning rate of 1e-5, achieving an 80% correct prediction rate on our validation set.")
-
 
 
 # ----------- Results and Limitation ------------
