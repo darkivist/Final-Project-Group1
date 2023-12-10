@@ -114,7 +114,7 @@ with tab2:
 
         st.markdown("BERT Model: BERT, or Bidirectional Encoder Representations from Transformers, is a transformer-based model designed for bidirectional context understanding. It is particularly effective in capturing dependencies in both directions. : Similar to GPT-3, cross-entropy loss was applied, aiming to guide the model in understanding the sequential information in math word problems. BERT, too, faced difficulties in accurately translating math word problems into numeric equations, prompting a reassessment of the chosen architecture.")
     with col2:
-        st.image("https://raw.githubusercontent.com/darkivist/Final-Project-Group1/107f850785dcacb8309f87029fd991d5b36ba494/Code/Images/GA7hYUhb0AAQHnZ.jpg")
+        st.image("https://raw.githubusercontent.com/darkivist/Final-Project-Group1/a0b95c8a1e17944b1df85aae7ca56098e40c7805/Code/Images/llm_tree.jpg")
     st.subheader(" Flan T5 Model")
     
     col1, col2 = st.columns(2, gap='medium')
@@ -200,6 +200,18 @@ with tab3:
 
         st.markdown("The noticeable differences in performance between Flan T5 Base and T5 Small can be attributed to various factors, with model size and capacity being the primary influence. As a larger model, Flan T5 Base has a higher parameter count and inherent complexity, enabling it to capture and generalize more intricate patterns within the data.")
 
+        st.divider()
+
+        st.header("Accuracy difference between numerical answers generation and equation generation")
+
+        st.markdown("Our equation-answering model demonstrates commendable accuracy, revealing a significant performance gap when compared to a model exclusively focused on numerical responses. Notably, the numerical model encounters challenges, with accuracy percentages varying across operations: Subtraction at 57%, Addition at 12%, Common-Division at 25%, and Multiplication at 5%. This disparity suggests potential complexities in the model's numerical reasoning, prompting a need for further investigation to enhance its precision in predicting correct numerical solutions.")
+
+        st.image("")
+
+        st.divider()
+        st.header('Limitation')
+
+        st.markdown("Despite the promising features of the Flan T5 Base model, it's essential to acknowledge its limitations. The model's accuracy falls short when faced with more complex mathematical word problems, demonstrating a noticeable struggle in handling higher-level mathematical concepts. While adept at basic arithmetic and straightforward problem-solving, its performance tends to plateau, making it less reliable for intricate or advanced mathematical scenarios. This limitation underscores the importance of continued research and development to enhance the model's capabilities and extend its applicability to a broader range of mathematical complexities. Acknowledging these constraints provides a transparent understanding of the model's current limitations and serves as a foundation for future improvements and advancements in mathematical language understanding models.")
 
 
 
@@ -207,9 +219,9 @@ with tab3:
 
 with tab5:
 
+    st.header("Type in a Math Word Problem")
 
-
-    text = st.text_input("Type in a math problem", value=None, placeholder="Type here...")
+    text = st.text_input("", value=None, placeholder="Type here...")
 
     if st.button("Generate Answer"):
         # Tokenize and generate equation
