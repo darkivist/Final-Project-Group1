@@ -204,9 +204,9 @@ with tab3:
 
         st.header("Accuracy difference between numerical answers generation and equation generation")
 
-        st.markdown("Our equation-answering model demonstrates commendable accuracy, revealing a significant performance gap when compared to a model exclusively focused on numerical responses. Notably, the numerical model encounters challenges, with accuracy percentages varying across operations: Subtraction at 57%, Addition at 12%, Common-Division at 25%, and Multiplication at 5%. This disparity suggests potential complexities in the model's numerical reasoning, prompting a need for further investigation to enhance its precision in predicting correct numerical solutions.")
+        st.markdown("The performance gap between our equation-answering model and a numerical-focused counterpart reveals an intriguing trend. While the equation-answering model demonstrates commendable accuracy, the numerical model faces challenges, with Subtraction at 12%, Addition at 7%, Common-Division at 17%, and Multiplication at 6%. This suggests potential complexities in the model's numerical reasoning, prompting further examination for future enhancements to optimize accuracy in providing correct numerical solutions.")
 
-        st.image("")
+        st.image("https://raw.githubusercontent.com/darkivist/Final-Project-Group1/a2dab5d6e049adbcdcf42394d228eb5ed4407edd/Code/Images/Accuracy_between_Equations%26Numeracy.png", width = 1000)
 
         st.divider()
         st.header('Limitation')
