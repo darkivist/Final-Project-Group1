@@ -57,7 +57,13 @@ with tab1:
     st.markdown("MAWPS:")
     st.markdown("- MAWPS was developed by researchers at Google and Microsoft to be used to test various NLP models curated to solve math word problems.")
     st.markdown("- Inconsistencies in the performance of models on this dataset because when the question component of the problem was removed unring test the model still preformed well.\n ")
-    st.markdown("\t- Suggests potential reliance on cues unrelated to the actual mathematical concepts ")
+    st.markdown("\t- Suggests potential reliance on cues unrelated to the actual mathematical concepts. ")
+    st.markdown("- Used an augmented dataset with 60,000 rows for training.")
+    
+    st.markdown("SVAMP:")
+    st.markdown("- Similarly created my researchers to assess a model's proficiency at interpretting various aspects of mathematical word problem solving.")
+    st.markdown("- Different arrangements of the structure can test how the model to adapt to these changes.")
+    st.markdown("- Consisting of 1000 word problems used for testing.")
     
     st.image("https://raw.githubusercontent.com/darkivist/Final-Project-Group1/ab1a9fe0168aa35d5d37017c58f0317fac0322b9/Code/Images/example-image.png")
     
