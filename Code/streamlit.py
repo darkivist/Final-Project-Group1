@@ -55,7 +55,7 @@ with tab1:
 
     st.markdown("To address this, the researchers created the “SVAMP” dataset as a testing framework to evaluate a model’s proficiency in various aspects of mathematical word problem solving. SVAMP assesses sensitivity to questions, reasoning ability, and invariance to structural alterations. For example, it challenges models with variations like changing the direction of interactions or altering the sequence of events within a problem.")
 
-    col1, col2 = st.columns(2)
+    col1, col2 = st.columns(2,  gap="medium")
     with col1:
         st.image("https://raw.githubusercontent.com/darkivist/Final-Project-Group1/ab1a9fe0168aa35d5d37017c58f0317fac0322b9/Code/Images/example-image.png")
 
@@ -80,14 +80,17 @@ with tab2:
     
     st.subheader("Original Attempts")
     
+    st.markdown("We explored various deep learning approaches in order to achieve our goal of translating math word problems into a numeric output. The first approach attempted to use a GPT-3 type transformer due to its flexibility in various NLP tasks like language translation, summarization, and generation. Though the model showed extremely low loss after training, it ultimately was unable to translate math word problems into numeric equations thus, leaving the team to explore other sequence-to-sequence focused techniques.")
     st.text("GPT Model:")
     
     st.text("BERT Model:")
     
-    st.subheader("T5 Model")
+    st.subheader(" Flan T5 Model")
     
-    st.text("Write description here:")
-    
+
+    st.markdown("Flan T5 Base, an extension of Google's T5 architecture, specializes in language-related tasks, with a particular focus on mathematical language understanding. Boasting 245 million parameters, this variant offers versatility for natural language processing (NLP) tasks, treating them uniformly as text-to-text problems. Through fine-tuning on the MAWPS augmented dataset, Flan T5 Base becomes adept at converting mathematical word problems to equations, capitalizing on the models adaptability inherited from the T5 architecture.")
+    st.markdown("The model's efficacy in addressing the nuances of mathematical language can be attributed to its robustness and adaptability. Like its predecessor T5, Flan T5 Base utilizes standard language modeling loss, such as cross-entropy loss, during training. This ensures the generation of accurate equations that faithfully represent the mathematical relationships described in word problems. The fine-tuning process is crucial, involving experimentation with hyperparameters to attain an optimal configuration for the specific task at hand, thereby enhancing the model's performance in converting MWPs to equations")
+    st.markdown("In summary, Flan T5 Base, with its foundation in the T5 architecture, proves to be a powerful tool for mathematical language understanding. Through fine-tuning on the MAWPS augmented dataset and a meticulous optimization process, the model excels in converting complex mathematical word problems into accurate equations, showcasing its adaptability and robustness in handling diverse NLP challenges.")
     
 
 # ---------- Experimental Design and Hyperparameters ----------
