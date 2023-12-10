@@ -2,12 +2,11 @@
 #use train.csv with 9000 records
 
 from transformers import T5Tokenizer, T5ForConditionalGeneration, Seq2SeqTrainer, Seq2SeqTrainingArguments
+import torch
 from torch.utils.data import Dataset
 import pandas as pd
-from sklearn.model_selection import train_test_split
-from torch.utils.tensorboard import SummaryWriter
 import re
-import torch
+from sklearn.model_selection import train_test_split
 
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 
@@ -60,7 +59,7 @@ class CustomDataset(Dataset):
 
 data = pd.read_csv('train.csv')
 
-#function to replace number0 (etc) values with actual numbers
+function to replace number0 (etc) values with actual numbers
 def replace_number_placeholders(row):
     def replace_number(match):
         number_index = int(match.group(1))  #extract number index
@@ -98,18 +97,17 @@ model.to(device)
 
 #define training arguments
 training_args = Seq2SeqTrainingArguments(
-    output_dir='./results_t5_small',
+    output_dir='./results',
     per_device_train_batch_size=16,
     per_device_eval_batch_size=16,
-    logging_dir='./logs_t5_small',
+    logging_dir='./logs',
     logging_steps=100,
     save_steps=1000,
     evaluation_strategy='epoch',
     eval_steps=500,
-    num_train_epochs=200,
+    num_train_epochs=100,
     predict_with_generate=True
 )
-
 #define optimizer and instantiate Seq2SeqTrainer
 optimizer = torch.optim.Adam(model.parameters(), lr=1e-5)
 trainer = Seq2SeqTrainer(
@@ -121,34 +119,8 @@ trainer = Seq2SeqTrainer(
     optimizers=(optimizer, None)
 )
 
-#set up tensorboard writer
-writer = SummaryWriter(log_dir=training_args.logging_dir)
-
-#training loop
-for epoch in range(training_args.num_train_epochs):
-    trainer.train()
-
-    #save model checkpoint
-    if (epoch + 1) % training_args.save_steps == 0:
-        model_checkpoint_path = f'./results/checkpoint-{epoch+1}'
-        trainer.save_model(model_checkpoint_path)
-
-    #log histograms of model weights
-    for name, param in model.named_parameters():
-        writer.add_histogram(name, param, epoch + 1)
-
-    #check if the current epoch equals the maximum number of epochs to avoid infinite loop
-    if epoch + 1 == training_args.num_train_epochs:
-        break  #exit the training loop after completing the specified epochs
-
-writer.close()
-
-#to launch tensorboard from AWS, enter following in local terminal (update with your own details):
-# "ssh -x -i name_of_your_aws_key.pem 6006:localhost:6006 ubuntu@ip_address_of_your_instance"
-
-#then in remote terminal enter:
-# "tensorboard --logdir ./logs"
-#then open "http://localhost:6006/" in local web browser
+#train model
+trainer.train()
 
 #display training metrics
 train_metrics = trainer.evaluate()
@@ -164,15 +136,16 @@ for i in range(5):
     true_answer = val_dataset.answers[i]
 
     #reshape input_ids to add batch and sequence length dimensions
-    input_ids = input_ids.unsqueeze(0).to(device)
+    input_ids = input_ids.unsqueeze(0).to(device)  # Add batch dimension and move to device
 
     #generate prediction
     outputs = model.generate(input_ids)
-    prediction = tokenizer.decode(outputs[0], skip_special_tokens=True)
+    prediction = tokenizer.decode(outputs[0], skip_special_tokens=True)  # Decode the output without special tokens
 
     print(f"Validation Question: {val_question}")
     print(f"Predicted Text: {prediction}")
     print(f"True Answer: {true_answer}")
+
 
 #function to tokenize sample problem for testing
 def preprocess_word_problem(problem_text):
