@@ -51,26 +51,25 @@ with tab1:
     
     st.subheader("Dataset")
 
-    st.markdown("In our study, we used two main datasets: MAWPS (A Math Word Problem Repository) for training and SVAMP (Simple Variation on Arithmetic Math Word Problems) for testing. The original research paper identified issues with widely used math word problem (MWP) benchmark datasets like ASDiv-A and MAWPS. Existing models performed well on these datasets, even when the “question” part was omitted during testing, indicating a reliance on cues unrelated to the actual math problem.")
-
-    st.markdown("To address this, the researchers created the “SVAMP” dataset as a testing framework to evaluate a model’s proficiency in various aspects of mathematical word problem solving. SVAMP assesses sensitivity to questions, reasoning ability, and invariance to structural alterations. For example, it challenges models with variations like changing the direction of interactions or altering the sequence of events within a problem.")
-
-    col1, col2 = st.columns(2)
-    with col1:
-        st.image("https://raw.githubusercontent.com/darkivist/Final-Project-Group1/ab1a9fe0168aa35d5d37017c58f0317fac0322b9/Code/Images/example-image.png")
-
-    with col2:
-
-        st.markdown("MAWPS:")
-        st.markdown("- MAWPS was developed by researchers at Google and Microsoft to be used to test various NLP models curated to solve math word problems.")
-        st.markdown("- Inconsistencies in the performance of models on this dataset because when the question component of the problem was removed unring test the model still preformed well.\n ")
-        st.markdown("\t- Suggests potential reliance on cues unrelated to the actual mathematical concepts ")
+    st.markdown("MAWPS (Math Word Problem Repository) used for training")
+    st.markdown("SVAMP (Simple Variation on Arithmetic Math Word Problems) used for testing")
     
-        st.divider()
+    st.markdown("MAWPS:")
+    st.markdown("- MAWPS was developed by researchers at Google and Microsoft to be used to test various NLP models curated to solve math word problems.")
+    st.markdown("- Inconsistencies in the performance of models on this dataset because when the question component of the problem was removed unring test the model still preformed well.\n ")
+    st.markdown("\t- Suggests potential reliance on cues unrelated to the actual mathematical concepts ")
+    
+    st.markdown("SVAMP:")
+    st.markdown("- Similarly created my researchers to assess a model's proficiency at interpretting various aspects of mathematical word problem solving.")
+    st.markdown("- Different arrangements of the structure can test how the model to adapt to these changes.")
+    st.markdown("- Consisting of 1000 word problems used for testing.")
+    
+    
+    st.divider()
 
-        st.subheader("Training and Testing Dataset")
+    st.subheader("Training and Testing Dataset")
 
-        st.markdown("We trained our model on an augmented version of MAWPS with approximately 60,000 rows and used SVAMP with 1000 math word problems for testing. SVAMP includes scenarios focusing on subtraction, addition, division, and multiplication. The dataset provides information about the question, numbers, equations, and answers. The 'Numbers' column includes relevant numerical values for each problem, serving as inputs during data preprocessing. The 'Equation' column represents the target variable, aiding the evaluation of the model's ability to translate word problems accurately into a numeric format.")
+    st.markdown("We trained our model on an augmented version of MAWPS with approximately 60,000 rows and used SVAMP with 1000 math word problems for testing. SVAMP includes scenarios focusing on subtraction, addition, division, and multiplication. The dataset provides information about the question, numbers, equations, and answers. The 'Numbers' column includes relevant numerical values for each problem, serving as inputs during data preprocessing. The 'Equation' column represents the target variable, aiding the evaluation of the model's ability to translate word problems accurately into a numeric format.")
     
 
 # ----------- NLP Models -----------------------
