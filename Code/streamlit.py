@@ -5,6 +5,7 @@ import numpy as np
 from transformers import T5Tokenizer, T5ForConditionalGeneration
 import torch
 st.set_page_config(layout="wide")
+
 from PIL import Image
 import pandas as pd
 
@@ -126,8 +127,8 @@ with tab2:
 with tab3:
     st.header("Experimental Design")
     
-    st.text("Metrics and evaluations:")
-    
+    st.markdown("Before discovering our augmented dataset, we initially worked with a dataset that had distinct Numbers and Questions columns. To facilitate model training, we developed a function that utilized regular expressions to replace number placeholders within the questions. Specifically, for the T5-small model, we implemented a class that created customized training and validation datasets. In this setup, the processed Question (with real numbers) and Equation fields served as inputs, while the Answer field served as the output. Our Seq2Seq trainer was then instantiated with the specified training arguments.")
+    st.markdown("In the context of equation generation models, we transitioned to using the Flan T5 Base model after experimenting with T5-small. The setup for Flan T5 Base mirrors that of T5-small, maintaining consistency in the approach. This transition allowed us to leverage the enhanced capabilities of Flan T5 Base for our specific task of converting mathematical word problems to equations, ensuring a seamless integration into our existing framework.")
     st.header("Hyperparameters")
 
     st.markdown("We employed Optuna for hyperparameter tuning, conducting multiple experiments to determine the optimal metrics for model evaluation. Initially, we explored minimizing loss and optimizing for exact matches and token-level accuracy between predicted and true answers in the validation set. However, tuning for token-level accuracy and exact answer match proved unsuccessful. The resulting model failed to produce correct validation predictions.")
