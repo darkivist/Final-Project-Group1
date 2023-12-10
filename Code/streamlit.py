@@ -107,12 +107,14 @@ with tab3:
 # ----------- Results and Limitation ------------
 
 with tab4:
-    col1, col2 =  st.columns([2,1])
+    st.header("Results")
+    col1, col2 =  st.columns(2)
+    
 
     with col1:
-        st.header("Results")
+        
 
-        st.divider()
+        
 
         st.subheader("Metrics: Accuracy")
 
@@ -124,18 +126,8 @@ with tab4:
 
         st.markdown("Our test questions cover four arithmetic types: Subtraction (531), Addition (195), Common-Division (166), and Multiplication (108). This categorization enables a thorough assessment of our models' problem-solving skills across diverse mathematical contexts.")
 
-        st.image("https://raw.githubusercontent.com/darkivist/Final-Project-Group1/516dd995db1e0c3b274e599c8a45fc4116630124/Code/Images/Accuracy_Flan_t5.png")
-
-
-        st.divider()
-
-        st.subheader("Metrics: ROUGE")
-
-        st.markdown("The ROUGE scores (ROUGE-1: 0.605, ROUGE-2: 0.287, ROUGE-L: 0.605) assess the Language Model's (LLM) linguistic performance, measuring overlap and similarity with reference equations. These scores highlight the model's proficiency in reproducing unigrams, bigrams, and maintaining linguistic coherence")
-
-        st.markdown(" A notable difference between ROUGE-2 and ROUGE-1 scores provides insights into the model's language generation capabilities, suggesting challenges in reproducing consecutive word sequences (bigrams) when ROUGE-2 is significantly lower than ROUGE-1."
-                    )
-        st.image("https://raw.githubusercontent.com/darkivist/Final-Project-Group1/516dd995db1e0c3b274e599c8a45fc4116630124/Code/Images/Rouge%20Score.png")
+        st.image("https://raw.githubusercontent.com/darkivist/Final-Project-Group1/516dd995db1e0c3b274e599c8a45fc4116630124/Code/Images/Accuracy_Flan_t5.png", width=800)
+        st.markdown('<style>div[data-testid="stHorizontalBlock"] > div{border-right: 2px solid #f63366;}</style>', unsafe_allow_html=True)
 
         st.divider()
 
@@ -145,9 +137,22 @@ with tab4:
 
         st.markdown("Flan T5 Base consistently outperforms T5 Small across arithmetic operations, with notable differences in Subtraction (19% vs. 10%), Addition (23% vs. 12%), Division (40% vs. 7%), and Multiplication (21% vs. 5%). In this comparison, Flan T5 Base achieves an overall accuracy of 23.6%, significantly outpacing T5 Small, which stands at 9.4%.")
 
-        st.image("https://raw.githubusercontent.com/darkivist/Final-Project-Group1/516dd995db1e0c3b274e599c8a45fc4116630124/Code/Images/Accuracy_between_models.png")
+        st.image("https://raw.githubusercontent.com/darkivist/Final-Project-Group1/516dd995db1e0c3b274e599c8a45fc4116630124/Code/Images/Accuracy_between_models.png", width=800)
 
-        st.markdown("The noticeable differences in performance between Flan T5 Base and T5 Small can be attributed to various factors, with model size and capacity being the primary influence. As a larger model, Flan T5 Base has a higher parameter count and inherent complexity, enabling it to capture and generalize more intricate patterns within the data.")
+
+    with col2:
+
+
+        st.subheader("Metrics: ROUGE")
+
+        st.markdown("The ROUGE scores (ROUGE-1: 0.605, ROUGE-2: 0.287, ROUGE-L: 0.605) assess the Language Model's (LLM) linguistic performance, measuring overlap and similarity with reference equations. These scores highlight the model's proficiency in reproducing unigrams, bigrams, and maintaining linguistic coherence")
+
+        st.markdown(" A notable difference between ROUGE-2 and ROUGE-1 scores provides insights into the model's language generation capabilities, suggesting challenges in reproducing consecutive word sequences (bigrams) when ROUGE-2 is significantly lower than ROUGE-1."
+                    )
+        st.image("https://raw.githubusercontent.com/darkivist/Final-Project-Group1/516dd995db1e0c3b274e599c8a45fc4116630124/Code/Images/Rouge%20Score.png",  width=750)
+
+        st.markdown('<style>div[data-testid="stHorizontalBlock"] > div{border-right: 2px solid #000;}</style>', unsafe_allow_html=True)
+
 
         st.divider()
 
@@ -157,11 +162,11 @@ with tab4:
 
         st.markdown("Nevertheless, the substantial decline in ROUGE-2 scores (0.287 vs. 0.144) indicates challenges for both models in accurately reproducing consecutive word sequences.")
 
-        st.image("https://raw.githubusercontent.com/darkivist/Final-Project-Group1/516dd995db1e0c3b274e599c8a45fc4116630124/Code/Images/Rouge_Score_between_models.png")
+        st.image("https://raw.githubusercontent.com/darkivist/Final-Project-Group1/516dd995db1e0c3b274e599c8a45fc4116630124/Code/Images/Rouge_Score_between_models.png", width=800)
+
+    st.markdown("The noticeable differences in performance between Flan T5 Base and T5 Small can be attributed to various factors, with model size and capacity being the primary influence. As a larger model, Flan T5 Base has a higher parameter count and inherent complexity, enabling it to capture and generalize more intricate patterns within the data.")
 
 
-    with col2:
-        st.header("Limitation")
 
 
 # ----------- Model Demo -------------------
