@@ -103,15 +103,18 @@ with tab1:
 # ----------- NLP Models -----------------------
 
 with tab2:
-    st.header("NLP Model Architecture")
-    
-    st.subheader("Original Attempts")
-    
-    st.markdown("We explored various deep learning approaches in order to achieve our goal of translating math word problems into a numeric output. The first approach attempted to use a GPT-3 type transformer due to its flexibility in various NLP tasks like language translation, summarization, and generation. Though the model showed extremely low loss after training, it ultimately was unable to translate math word problems into numeric equations thus, leaving the team to explore other sequence-to-sequence focused techniques.")
-    st.markdown("GPT Model: The GPT-3 type transformer follows the transformer architecture, known for its attention mechanisms. It excels in capturing contextual information across sequences. Cross-entropy loss was employed, commonly used in language modeling tasks, with the expectation that it would guide the model to generate accurate numeric equations for math word problems.Despite achieving low training loss, the model struggled to make accurate predictions, leading the team to reevaluate the chosen approach.")
-    
-    st.markdown("BERT Model: BERT, or Bidirectional Encoder Representations from Transformers, is a transformer-based model designed for bidirectional context understanding. It is particularly effective in capturing dependencies in both directions. : Similar to GPT-3, cross-entropy loss was applied, aiming to guide the model in understanding the sequential information in math word problems. BERT, too, faced difficulties in accurately translating math word problems into numeric equations, prompting a reassessment of the chosen architecture.")
-    
+    col1, col2 = st.columns([1,2], gap='medium')
+    with col1:
+        st.header("NLP Model Architecture")
+
+        st.subheader("Original Attempts")
+
+        st.markdown("We explored various deep learning approaches in order to achieve our goal of translating math word problems into a numeric output. The first approach attempted to use a GPT-3 type transformer due to its flexibility in various NLP tasks like language translation, summarization, and generation. Though the model showed extremely low loss after training, it ultimately was unable to translate math word problems into numeric equations thus, leaving the team to explore other sequence-to-sequence focused techniques.")
+        st.markdown("GPT Model: The GPT-3 type transformer follows the transformer architecture, known for its attention mechanisms. It excels in capturing contextual information across sequences. Cross-entropy loss was employed, commonly used in language modeling tasks, with the expectation that it would guide the model to generate accurate numeric equations for math word problems.Despite achieving low training loss, the model struggled to make accurate predictions, leading the team to reevaluate the chosen approach.")
+
+        st.markdown("BERT Model: BERT, or Bidirectional Encoder Representations from Transformers, is a transformer-based model designed for bidirectional context understanding. It is particularly effective in capturing dependencies in both directions. : Similar to GPT-3, cross-entropy loss was applied, aiming to guide the model in understanding the sequential information in math word problems. BERT, too, faced difficulties in accurately translating math word problems into numeric equations, prompting a reassessment of the chosen architecture.")
+    with col2:
+        st.image("https://raw.githubusercontent.com/darkivist/Final-Project-Group1/a0b95c8a1e17944b1df85aae7ca56098e40c7805/Code/Images/llm_tree.jpg")
     st.subheader(" Flan T5 Model")
     
     col1, col2 = st.columns(2, gap='medium')
@@ -135,6 +138,7 @@ with tab3:
 
     st.markdown("Subsequently, we focused on minimizing loss, and our tuner selected the following hyperparameter values: batch size - 64, epochs - 47, optimizer - Adam, and learning rate - 1e-4, resulting in a validation loss of 0.04. Unfortunately, the model produced with these parameters did not yield satisfactory results. After further experimentation, we settled on a batch size of 16, 200 epochs, optimizer Adam, and a learning rate of 1e-5, achieving an 80% correct prediction rate on our validation set.")
 
+    st.image("https://raw.githubusercontent.com/darkivist/Final-Project-Group1/26716026dff9598f704d31aa9660e5e43d47a9d0/Code/Images/eval_loss.png", caption="Eval Loss for Equations")
 
 
 # ----------- Results and Limitation ------------
@@ -196,6 +200,18 @@ with tab3:
 
         st.markdown("The noticeable differences in performance between Flan T5 Base and T5 Small can be attributed to various factors, with model size and capacity being the primary influence. As a larger model, Flan T5 Base has a higher parameter count and inherent complexity, enabling it to capture and generalize more intricate patterns within the data.")
 
+        st.divider()
+
+        st.header("Accuracy difference between numerical answers generation and equation generation")
+
+        st.markdown("The performance gap between our equation-answering model and a numerical-focused counterpart reveals an intriguing trend. While the equation-answering model demonstrates commendable accuracy, the numerical model faces challenges, with Subtraction at 12%, Addition at 7%, Common-Division at 17%, and Multiplication at 6%. This suggests potential complexities in the model's numerical reasoning, prompting further examination for future enhancements to optimize accuracy in providing correct numerical solutions.")
+
+        st.image("https://raw.githubusercontent.com/darkivist/Final-Project-Group1/a2dab5d6e049adbcdcf42394d228eb5ed4407edd/Code/Images/Accuracy_between_Equations%26Numeracy.png", width = 1000)
+
+        st.divider()
+        st.header('Limitation')
+
+        st.markdown("Despite the promising features of the Flan T5 Base model, it's essential to acknowledge its limitations. The model's accuracy falls short when faced with more complex mathematical word problems, demonstrating a noticeable struggle in handling higher-level mathematical concepts. While adept at basic arithmetic and straightforward problem-solving, its performance tends to plateau, making it less reliable for intricate or advanced mathematical scenarios. This limitation underscores the importance of continued research and development to enhance the model's capabilities and extend its applicability to a broader range of mathematical complexities. Acknowledging these constraints provides a transparent understanding of the model's current limitations and serves as a foundation for future improvements and advancements in mathematical language understanding models.")
 
 
 
@@ -203,9 +219,9 @@ with tab3:
 
 with tab5:
 
+    st.header("Type in a Math Word Problem")
 
-
-    text = st.text_input("Type in a math problem", value=None, placeholder="Type here...")
+    text = st.text_input("", value=None, placeholder="Type here...")
 
     if st.button("Generate Answer"):
         # Tokenize and generate equation
