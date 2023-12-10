@@ -32,20 +32,20 @@ tab1, tab2, tab3, tab4, tab5 = st.tabs(["Introduction & Dataset", "NLP Model", "
 
 
 with tab1:
-    st.markdown("""___""")
+
     
-    # Uploading stock image
+    st.subheader("Introduction")
     
+
+    st.markdown("Language complexity gets tricky, especially when mixing math into word problems. Our group took on this challenge using transformers to simplify the complexities in math and languages")
+    st.markdown("Math word problems, those short stories with real-world scenarios, need more than just basic math skills. You've got to understand the context, sentence structure, and word connections. Solving them means figuring out the problem, picking out the important info, and turning it into solvable math. Computers find this tricky due to ambiguity and understanding context.")
+
     st.image("https://raw.githubusercontent.com/darkivist/Final-Project-Group1/ab1a9fe0168aa35d5d37017c58f0317fac0322b9/Code/Images/stock-image.jpeg")
-
-    
     st.divider()
-    
-    st.markdown("Ambiguity, context-dependent information, and inferential reasoning in math word problems poses a unique challenge to transformers and other NLP models")
 
-    st.subheader("Goals of the project:")
+    st.subheader("Goals of the project")
     
-    st.markdown("Goal of project is to translate math word problems (MWP) into numeric equations using transformers ")
+    st.markdown(" In our attempt to solve this problem, the multimodal capacities of transformers emerged as valuable assets. The goal of our project is to solve linguistic challenges with computational solutions, more specifically use the power of deep learning to convert word problems into solvable mathematical equations. ")
     
     st.divider()
     
@@ -57,15 +57,19 @@ with tab1:
     st.markdown("MAWPS:")
     st.markdown("- MAWPS was developed by researchers at Google and Microsoft to be used to test various NLP models curated to solve math word problems.")
     st.markdown("- Inconsistencies in the performance of models on this dataset because when the question component of the problem was removed unring test the model still preformed well.\n ")
-    st.markdown("\t- Suggests potential reliance on cues unrelated to the actual mathematical concepts. ")
-    st.markdown("- Used an augmented dataset with 60,000 rows for training.")
+    st.markdown("\t- Suggests potential reliance on cues unrelated to the actual mathematical concepts ")
     
     st.markdown("SVAMP:")
     st.markdown("- Similarly created my researchers to assess a model's proficiency at interpretting various aspects of mathematical word problem solving.")
     st.markdown("- Different arrangements of the structure can test how the model to adapt to these changes.")
     st.markdown("- Consisting of 1000 word problems used for testing.")
     
-    st.image("https://raw.githubusercontent.com/darkivist/Final-Project-Group1/ab1a9fe0168aa35d5d37017c58f0317fac0322b9/Code/Images/example-image.png")
+    
+    st.divider()
+
+    st.subheader("Training and Testing Dataset")
+
+    st.markdown("We trained our model on an augmented version of MAWPS with approximately 60,000 rows and used SVAMP with 1000 math word problems for testing. SVAMP includes scenarios focusing on subtraction, addition, division, and multiplication. The dataset provides information about the question, numbers, equations, and answers. The 'Numbers' column includes relevant numerical values for each problem, serving as inputs during data preprocessing. The 'Equation' column represents the target variable, aiding the evaluation of the model's ability to translate word problems accurately into a numeric format.")
     
 
 # ----------- NLP Models -----------------------
@@ -93,6 +97,9 @@ with tab3:
     
     st.header("Hyperparameters")
 
+    st.markdown("We employed Optuna for hyperparameter tuning, conducting multiple experiments to determine the optimal metrics for model evaluation. Initially, we explored minimizing loss and optimizing for exact matches and token-level accuracy between predicted and true answers in the validation set. However, tuning for token-level accuracy and exact answer match proved unsuccessful. The resulting model failed to produce correct validation predictions.")
+
+    st.markdown("Subsequently, we focused on minimizing loss, and our tuner selected the following hyperparameter values: batch size - 64, epochs - 47, optimizer - Adam, and learning rate - 1e-4, resulting in a validation loss of 0.04. Unfortunately, the model produced with these parameters did not yield satisfactory results. After further experimentation, we settled on a batch size of 16, 200 epochs, optimizer Adam, and a learning rate of 1e-5, achieving an 80% correct prediction rate on our validation set.")
 
 
 
