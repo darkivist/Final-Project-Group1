@@ -15,11 +15,26 @@ tokenizer_dir = "averma1010/T5_Math_Equation"
 
 tokenizer = T5Tokenizer.from_pretrained(tokenizer_dir)
 
+
+
 def load_model():
     model = T5ForConditionalGeneration.from_pretrained(output_dir)
     return model
 
 model = load_model()
+
+output_dir_ans = "darkivist/t5_math_problems"
+tokenizer_dir_ans = "darkivist/t5_math_problems"
+
+tokenizer_ans = T5Tokenizer.from_pretrained(tokenizer_dir_ans)
+
+
+
+def load_model_ans():
+    model = T5ForConditionalGeneration.from_pretrained(output_dir_ans)
+    return model
+
+model_ans = load_model_ans()
 
 
 # ---------- Titles and headers -----------
@@ -192,13 +207,29 @@ with tab5:
     text = st.text_input("Type in a math problem", value=None, placeholder="Type here...")
 
     if st.button("Generate Answer"):
-        # Tokenize and generate answer
+        # Tokenize and generate equation
         inputs = tokenizer(text, return_tensors="pt", max_length=512, truncation=True)
         output = model.generate(**inputs)
         decoded_output = tokenizer.decode(output[0], skip_special_tokens=True)
-        st.write("Inputed math problem:", text)
-        st.write("Generated Answer:", decoded_output)
 
+        # Tokenize and generate answer
+        inputs_ans = tokenizer_ans(text, return_tensors="pt", max_length=512, truncation=True)
+        output_ans = model_ans.generate(**inputs_ans)
+        decoded_output_ans = tokenizer.decode(output_ans[0], skip_special_tokens=True)
+
+        # Display results in a box with big font
+        st.subheader("Generated Results:")
+
+        # Use Streamlit columns to display side by side
+        col1, col2 = st.columns(2)
+
+        with col1:
+            st.info("Generated Equation:")
+            st.write(decoded_output, key="equation_output")
+
+        with col2:
+            st.success("Generated Answer:")
+            st.write(decoded_output_ans, key="answer_output")
 
 # Add animation for when model is predicting
 
