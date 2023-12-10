@@ -40,7 +40,7 @@ with tab1:
     st.markdown("Language complexity gets tricky, especially when mixing math into word problems. Our group took on this challenge using transformers to simplify the complexities in math and languages")
     st.markdown("Math word problems, those short stories with real-world scenarios, need more than just basic math skills. You've got to understand the context, sentence structure, and word connections. Solving them means figuring out the problem, picking out the important info, and turning it into solvable math. Computers find this tricky due to ambiguity and understanding context.")
 
-    st.image("https://raw.githubusercontent.com/darkivist/Final-Project-Group1/ab1a9fe0168aa35d5d37017c58f0317fac0322b9/Code/Images/stock-image.jpeg")
+    st.image("https://raw.githubusercontent.com/darkivist/Final-Project-Group1/05a63502c78993eb5725fc1a832223d9f34c3e9f/Code/Images/1_6qu0JSsBvKsyME8Wd_xF6Q.png")
     st.divider()
 
     st.subheader("Goals of the project")
@@ -81,9 +81,9 @@ with tab2:
     st.subheader("Original Attempts")
     
     st.markdown("We explored various deep learning approaches in order to achieve our goal of translating math word problems into a numeric output. The first approach attempted to use a GPT-3 type transformer due to its flexibility in various NLP tasks like language translation, summarization, and generation. Though the model showed extremely low loss after training, it ultimately was unable to translate math word problems into numeric equations thus, leaving the team to explore other sequence-to-sequence focused techniques.")
-    st.text("GPT Model:")
+    st.markdown("GPT Model: The GPT-3 type transformer follows the transformer architecture, known for its attention mechanisms. It excels in capturing contextual information across sequences. Cross-entropy loss was employed, commonly used in language modeling tasks, with the expectation that it would guide the model to generate accurate numeric equations for math word problems.Despite achieving low training loss, the model struggled to make accurate predictions, leading the team to reevaluate the chosen approach.")
     
-    st.text("BERT Model:")
+    st.markdown("BERT Model: BERT, or Bidirectional Encoder Representations from Transformers, is a transformer-based model designed for bidirectional context understanding. It is particularly effective in capturing dependencies in both directions. : Similar to GPT-3, cross-entropy loss was applied, aiming to guide the model in understanding the sequential information in math word problems. BERT, too, faced difficulties in accurately translating math word problems into numeric equations, prompting a reassessment of the chosen architecture.")
     
     st.subheader(" Flan T5 Model")
     
