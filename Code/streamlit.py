@@ -127,7 +127,6 @@ with tab4:
         st.markdown("Our test questions cover four arithmetic types: Subtraction (531), Addition (195), Common-Division (166), and Multiplication (108). This categorization enables a thorough assessment of our models' problem-solving skills across diverse mathematical contexts.")
 
         st.image("https://raw.githubusercontent.com/darkivist/Final-Project-Group1/516dd995db1e0c3b274e599c8a45fc4116630124/Code/Images/Accuracy_Flan_t5.png", width=800)
-        st.markdown('<style>div[data-testid="stHorizontalBlock"] > div{border-right: 2px solid #f63366;}</style>', unsafe_allow_html=True)
 
         st.divider()
 
@@ -147,8 +146,7 @@ with tab4:
 
         st.markdown("The ROUGE scores (ROUGE-1: 0.605, ROUGE-2: 0.287, ROUGE-L: 0.605) assess the Language Model's (LLM) linguistic performance, measuring overlap and similarity with reference equations. These scores highlight the model's proficiency in reproducing unigrams, bigrams, and maintaining linguistic coherence")
 
-        st.markdown(" A notable difference between ROUGE-2 and ROUGE-1 scores provides insights into the model's language generation capabilities, suggesting challenges in reproducing consecutive word sequences (bigrams) when ROUGE-2 is significantly lower than ROUGE-1."
-                    )
+        st.markdown(" A notable difference between ROUGE-2 and ROUGE-1 scores provides insights into the model's language generation capabilities, suggesting challenges in reproducing consecutive word sequences (bigrams) when ROUGE-2 is significantly lower than ROUGE-1." )
         st.image("https://raw.githubusercontent.com/darkivist/Final-Project-Group1/516dd995db1e0c3b274e599c8a45fc4116630124/Code/Images/Rouge%20Score.png",  width=750)
 
 
