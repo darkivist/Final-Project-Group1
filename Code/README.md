@@ -1,4 +1,4 @@
-# READ ME
+# README
 
 Model_Upload_HF.py - Script to upload completed model to Hugging Face repository.
 

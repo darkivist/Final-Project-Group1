@@ -1,4 +1,4 @@
-# READ ME
+# README
 
 Data is this directory is:
 
