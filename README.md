@@ -3,7 +3,7 @@
 
 This repository contains the following directories: Code, Data, Final-Group-Presentation, Final-Group-Project-Report, Group-Proposal, and Individual-Final-Project-Report. The contents of these directories is as follows:
 
-Code - All python code written for the project. See separate readme file in this directory documenting specific scripts.
+Code - All code written for the project. See separate readme file in this directory documenting specific scripts.
 
 Data - All data for the project. Data in this directory must be downloaded to the same working directory as the scripts contained in the code directory to operate correctly.
 
