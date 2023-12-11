@@ -1,6 +1,11 @@
 # README
 ## NLP Group 1 Project Code
 
+Our Models are available in Huggingface aswell:
+Equation : https://huggingface.co/averma1010/T5_Math_Equation
+
+Numbers : https://huggingface.co/darkivist/t5_math_problems
+
 This repository contains the following directories: Code, Data, Final-Group-Presentation, Final-Group-Project-Report, Group-Proposal, and Individual-Final-Project-Report. The contents of these directories is as follows:
 
 Code - All code written for the project. See separate readme file in this directory documenting specific scripts.
