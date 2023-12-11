@@ -109,10 +109,10 @@ with tab2:
 
         st.subheader("Original Attempts")
 
-        st.markdown("We explored various deep learning approaches in order to achieve our goal of translating math word problems into a numeric output. The first approach attempted to use a GPT-3 type transformer due to its flexibility in various NLP tasks like language translation, summarization, and generation. Though the model showed extremely low loss after training, it ultimately was unable to translate math word problems into numeric equations thus, leaving the team to explore other sequence-to-sequence focused techniques.")
-        st.markdown("GPT Model: The GPT-3 type transformer follows the transformer architecture, known for its attention mechanisms. It excels in capturing contextual information across sequences. Cross-entropy loss was employed, commonly used in language modeling tasks, with the expectation that it would guide the model to generate accurate numeric equations for math word problems.Despite achieving low training loss, the model struggled to make accurate predictions, leading the team to reevaluate the chosen approach.")
+        st.markdown("We explored various deep learning approaches in order to achieve our goal of translating math word problems into a numeric output. The first approach attempted to use a GPT-2 type transformer due to its flexibility in various NLP tasks like language translation, summarization, and generation. Though the model showed extremely low loss after training, it ultimately was unable to translate math word problems into numeric equations thus, leaving the team to explore other sequence-to-sequence focused techniques.")
+        st.markdown("GPT Model: The GPT-2 type transformer follows the transformer architecture, known for its attention mechanisms. It excels in capturing contextual information across sequences. Cross-entropy loss was employed, commonly used in language modeling tasks, with the expectation that it would guide the model to generate accurate numeric equations for math word problems.Despite achieving low training loss, the model struggled to make accurate predictions, leading the team to reevaluate the chosen approach.")
 
-        st.markdown("BERT Model: BERT, or Bidirectional Encoder Representations from Transformers, is a transformer-based model designed for bidirectional context understanding. It is particularly effective in capturing dependencies in both directions. : Similar to GPT-3, cross-entropy loss was applied, aiming to guide the model in understanding the sequential information in math word problems. BERT, too, faced difficulties in accurately translating math word problems into numeric equations, prompting a reassessment of the chosen architecture.")
+        st.markdown("BERT Model: BERT, or Bidirectional Encoder Representations from Transformers, is a transformer-based model designed for bidirectional context understanding. It is particularly effective in capturing dependencies in both directions. : Similar to GPT-2, cross-entropy loss was applied, aiming to guide the model in understanding the sequential information in math word problems. BERT, too, faced difficulties in accurately translating math word problems into numeric equations, prompting a reassessment of the chosen architecture.")
     with col2:
         st.image("https://raw.githubusercontent.com/darkivist/Final-Project-Group1/a0b95c8a1e17944b1df85aae7ca56098e40c7805/Code/Images/llm_tree.jpg")
     st.subheader(" Flan T5 Model")
@@ -137,9 +137,14 @@ with tab3:
     st.markdown("We employed Optuna for hyperparameter tuning, conducting multiple experiments to determine the optimal metrics for model evaluation. Initially, we explored minimizing loss and optimizing for exact matches and token-level accuracy between predicted and true answers in the validation set. However, tuning for token-level accuracy and exact answer match proved unsuccessful. The resulting model failed to produce correct validation predictions.")
 
     st.markdown("Subsequently, we focused on minimizing loss, and our tuner selected the following hyperparameter values: batch size - 64, epochs - 47, optimizer - Adam, and learning rate - 1e-4, resulting in a validation loss of 0.04. Unfortunately, the model produced with these parameters did not yield satisfactory results. After further experimentation, we settled on a batch size of 16, 200 epochs, optimizer Adam, and a learning rate of 1e-5, achieving an 80% correct prediction rate on our validation set.")
-
-    st.image("https://raw.githubusercontent.com/darkivist/Final-Project-Group1/26716026dff9598f704d31aa9660e5e43d47a9d0/Code/Images/eval_loss.png", caption="Eval Loss for Equations")
-
+    col1,col2,col3 = st.columns(3)
+    with col1:
+        st.image("https://raw.githubusercontent.com/darkivist/Final-Project-Group1/dabbd9a140439fbfba2df7fd7f01e6fc337bdd9f/Code/Images/eval_loss%20(1).png", caption="Eval Loss for Numerical Answers")
+    with col2:
+        st.image("https://raw.githubusercontent.com/darkivist/Final-Project-Group1/dabbd9a140439fbfba2df7fd7f01e6fc337bdd9f/Code/Images/train_loss%20(1).png", caption="Train Loss for Numerical Answers")
+    with col3:
+        st.image("https://raw.githubusercontent.com/darkivist/Final-Project-Group1/26716026dff9598f704d31aa9660e5e43d47a9d0/Code/Images/eval_loss.png", caption="Eval Loss for Equations")
+    
 
 # ----------- Results and Limitation ------------
 
