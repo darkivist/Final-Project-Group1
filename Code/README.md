@@ -13,3 +13,5 @@ t5_successful.py - Final script that trains t5-small Seq2Seq model on train.csv 
 tensorboard_onnx.py - Script snippet to generate tensorboard output and onnx model layer visualization.
 
 dataclass.py - Code snippet to build custom training datasets. Ultimately incorporated with final training scripts.
+
+Note that all code in legacy directory was written but ultimately not used.
