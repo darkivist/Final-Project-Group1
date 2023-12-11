@@ -1,4 +1,4 @@
-# READ ME
+# README
 ## NLP Group 1 Project Code
 
 This repository contains the following directories: Code, Data, Final-Group-Presentation, Final-Group-Project-Report, Group-Proposal, and Individual-Final-Project-Report. The contents of these directories is as follows:
