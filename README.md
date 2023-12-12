@@ -1,7 +1,7 @@
 # README
 ## NLP Group 1 Project Code
 
-Our Models are available in Huggingface aswell:
+Our Models are available on Huggingface aswell:
 
 Equation : https://huggingface.co/averma1010/T5_Math_Equation
 
