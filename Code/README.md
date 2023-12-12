@@ -14,4 +14,6 @@ tensorboard_onnx.py - Script snippet to generate tensorboard output and onnx mod
 
 dataclass.py - Code snippet to build custom training datasets. Ultimately incorporated with final training scripts.
 
+streamlit.py - Code for our final project report (images in Images directory required for app).
+
 Note that all code in legacy directory was written but ultimately not used.
